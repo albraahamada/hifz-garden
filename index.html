@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حديقة الحفظ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Amiri+Quran&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose:#e84a7f; --violet:#8a5cd1; --leaf:#5bb98c; --leaf-deep:#2f8f63;
+    --ink:#3a2b3f; --line:#ece2ee;
+    --excellent:#3bb273; --good:#3a9bd9; --weak:#f0883e; --redo:#e35454;
+    --accent:#8a5cd1; --accent-soft:#faf7ff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    font-family:'Tajawal',system-ui,'Segoe UI',sans-serif; color:var(--ink);
+    background:radial-gradient(circle at 10% 6%, #fff5fa 0, transparent 38%),radial-gradient(circle at 90% 8%, #f1ebff 0, transparent 40%),linear-gradient(180deg,#fffdfa 0%, #f6fbf5 100%);
+    min-height:100vh; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .wrap{max-width:1040px; margin:0 auto; padding:20px 18px 70px;}
+  .topbar{display:flex; flex-wrap:wrap; align-items:center; gap:12px; background:#fff; border-radius:20px; padding:14px 18px; margin-bottom:14px; box-shadow:0 8px 24px rgba(0,0,0,.07); border:1px solid var(--line);}
+  .brand{font-size:22px; font-weight:800; color:var(--leaf-deep); display:flex; align-items:center; gap:8px;}
+  .spacer{flex:1;}
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; background:#f4eef7; padding:5px; border-radius:14px;}
+  .tab{border:none; background:transparent; font-family:inherit; font-weight:700; font-size:15px; padding:9px 18px; border-radius:11px; cursor:pointer; color:#7a6b80; transition:.15s;}
+  .tab.active{color:#fff;}
+  .lockbtn{border:none; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; padding:10px 16px; border-radius:13px; display:flex; align-items:center; gap:7px; background:#f1ede4; color:#7a6a3e; transition:.15s;}
+  .lockbtn.open{background:#e3f6ea; color:var(--leaf-deep);}
+  .menu{position:relative;}
+  .menu-btn{border:none;background:#f4eef7;color:#7a6b80;font-size:18px;width:42px;height:42px;border-radius:12px;cursor:pointer;font-weight:800;}
+  .menu-list{position:absolute; left:0; top:48px; background:#fff; border:1px solid var(--line); border-radius:14px; box-shadow:0 12px 30px rgba(0,0,0,.14); padding:6px; min-width:200px; display:none; z-index:30;}
+  .menu-list.show{display:block;}
+  .menu-list button{width:100%; text-align:right; border:none; background:transparent; font-family:inherit; font-size:14px; padding:10px 12px; border-radius:9px; cursor:pointer; color:var(--ink);}
+  .menu-list button:hover{background:#f6f1f8;}
+  .menu-list button.danger{color:#d23f3f;}
+  .conn{display:none;}
+  .hero{border-radius:24px; padding:22px 24px 56px; color:#fff; text-align:center; position:relative; overflow:hidden; margin-bottom:18px; background:linear-gradient(135deg,#b18cf0,#8a5cd1 72%);}
+  .hero h1{margin:0; font-size:30px; font-weight:800;}
+  .hero .sub{margin-top:5px; font-size:14.5px; opacity:.95;}
+  .hero .crown{font-size:24px;}
+  .hills{position:absolute; left:0; right:0; bottom:-2px; height:46px;}
+  .stats{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:-44px 8px 18px; position:relative; z-index:5;}
+  .stat{background:#fff; border-radius:16px; padding:12px 8px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,.08); border:1px solid var(--line);}
+  .stat .v{font-size:22px; font-weight:800; line-height:1;}
+  .stat .l{font-size:11.5px; color:#857a8c; margin-top:5px;}
+  .stat.ex .v{color:var(--excellent);} .stat.go .v{color:var(--good);}
+  .stat.we .v{color:var(--weak);} .stat.re .v{color:var(--redo);}
+  .stat.done .v{color:var(--leaf-deep);}
+  .racecard{margin-bottom:14px;}
+  .prize{display:inline-block; background:linear-gradient(135deg,#ffe08a,#ffc23d); color:#7a5500; font-weight:800; font-size:13.5px; padding:8px 16px; border-radius:30px; margin:-2px 0 14px; box-shadow:0 4px 12px rgba(240,180,40,.35); border:1px solid #f0c24a;}
+  .prize b{font-size:15px; color:#b9326a;}
+  .racerow{display:flex; align-items:center; gap:12px; padding:8px 2px;}
+  .racerow.lead{background:#fffaf0; border:1px solid #ffe6ad; border-radius:14px; padding:8px 10px;}
+  .rkname{min-width:104px; display:flex; align-items:center; gap:7px; font-size:14.5px; font-weight:800;}
+  .rkmedal{font-size:18px; width:20px; text-align:center;}
+  .rktrack{flex:1; height:20px; background:#eef0f4; border-radius:20px; position:relative;}
+  .rkfill{height:100%; border-radius:20px; min-width:20px; transition:width .6s ease; position:relative;}
+  .rkflower{position:absolute; left:-3px; top:50%; transform:translateY(-50%); font-size:17px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));}
+  .rkmeta{min-width:96px; text-align:left; font-size:12.5px; color:#6f6577; font-weight:700;}
+  @media(max-width:560px){ .rkname{min-width:80px;font-size:13px;} .rkmeta{min-width:74px;font-size:11.5px;} }
+  .infoband{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:14px;}
+  .card{background:#fff; border-radius:18px; padding:14px 16px; border:1px solid var(--line); box-shadow:0 6px 16px rgba(0,0,0,.05);}
+  .card.legend{flex:1; min-width:240px;}
+  .card h3{margin:0 0 10px; font-size:15px; color:var(--leaf-deep);}
+  .legrow-wrap{display:flex; flex-wrap:wrap; gap:10px;}
+  .lgitem{flex:1; min-width:160px; display:flex; align-items:center; gap:11px; border-radius:14px; padding:11px 15px; border:1px solid var(--line);}
+  .lgitem .lgtxt b{display:block; font-size:14.5px; font-weight:800;}
+  .lgitem .lgtxt small{color:#6f6577; font-size:11.5px;}
+  .lgitem.ex{background:#eafaf1; border-color:#bfe9d2;}
+  .lgitem.go{background:#eaf4fb; border-color:#c7e3f5;}
+  .lgitem.we{background:#fdf2e8; border-color:#f6dcc0;}
+  .lgitem.re{background:#fdecec; border-color:#f6c9c9;}
+  .lgitem .dot{width:20px;height:20px;flex:0 0 auto;}
+  .dot{width:18px;height:18px;border-radius:50%;border:3px solid;}
+  .dot.ex{border-color:var(--excellent);background:var(--excellent);}
+  .dot.go{border-color:var(--good);background:var(--good);}
+  .dot.we{border-color:var(--weak);background:var(--weak);}
+  .dot.re{border-color:var(--redo);background:var(--redo);}
+  .tablecard{background:#fff; border-radius:20px; padding:8px 12px 14px; border:1px solid var(--line); box-shadow:0 8px 22px rgba(0,0,0,.06); overflow-x:auto;}
+  table{width:100%; border-collapse:separate; border-spacing:0 7px; min-width:560px;}
+  thead th{font-size:12.5px; color:#857a8c; font-weight:700; padding:6px 6px;}
+  tbody td{padding:8px 6px; text-align:center; vertical-align:middle; font-size:14px; border-top:1px solid #f2ecf4; border-bottom:1px solid #f2ecf4;}
+  tbody td:first-child{border-right:1px solid #f2ecf4; border-radius:0 12px 12px 0;}
+  tbody td:last-child{border-left:1px solid #f2ecf4; border-radius:12px 0 0 12px;}
+  tbody tr.row:nth-child(odd) td{background:var(--accent-soft);}
+  tr.row.done td{background:#f3fbf5 !important;}
+  .dayno{display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; font-weight:800; color:#fff; font-size:14px; background:var(--accent);}
+  .sname{font-family:'Amiri Quran',serif; font-size:16px; font-weight:700;}
+  .pgtag{font-size:10.5px; font-weight:700; color:#a98; margin-top:3px;}
+  .rev{color:#857a8c; font-size:12px; line-height:1.6;}
+  .date{font-size:12px; color:#9c8fa3; min-width:74px;}
+  .rate{display:flex; gap:6px; justify-content:center;}
+  .bub{width:26px; height:26px; border-radius:50%; border:3px solid; background:#fff; cursor:pointer; transition:transform .12s, background .12s;}
+  .bub.ex{border-color:var(--excellent);} .bub.go{border-color:var(--good);}
+  .bub.we{border-color:var(--weak);} .bub.re{border-color:var(--redo);}
+  .bub:hover{transform:scale(1.18);}
+  .bub.sel.ex{background:var(--excellent);} .bub.sel.go{background:var(--good);}
+  .bub.sel.we{background:var(--weak);} .bub.sel.re{background:var(--redo);}
+  .bub.sel{box-shadow:0 0 0 3px rgba(0,0,0,.06);}
+  body.locked .bub{cursor:not-allowed;}
+  body.locked .bub:hover{transform:none;}
+  .gardencard{margin-top:16px;}
+  .garden{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; background:linear-gradient(180deg,#f3fbf3,#e7f6ea); border-radius:16px; padding:16px 12px; border:1px solid #d4ecd9;}
+  .scard{position:relative; border-radius:14px; padding:14px 10px; min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; cursor:pointer; text-align:center; transition:transform .15s, box-shadow .15s;}
+  .scard:hover{transform:translateY(-2px);}
+  .scard .pn{position:absolute; top:5px; right:8px; font-size:10px; font-weight:700; opacity:.55;}
+  .scard.locked{background:#eef3ee; color:#9bb0a1; cursor:default;}
+  .scard.locked:hover{transform:none;}
+  .scard.locked .sface{font-size:22px; opacity:.5;}
+  .scard.locked .slbl{font-size:10.5px;}
+  .scard.redo{background:#fdecec; color:#c0392b; cursor:default; border:1.5px dashed #f0b3b3;}
+  .scard.redo:hover{transform:none;}
+  .scard.redo .sface{font-size:22px;}
+  .scard.redo .slbl{font-size:10.5px; font-weight:700;}
+  .scard.gift{background:linear-gradient(135deg,#ffe9a8,#ffce4d); color:#8a6310; box-shadow:0 5px 14px rgba(240,180,40,.35);}
+  .scard.gift .sface{font-size:26px;}
+  .scard.gift .slbl{font-size:11px; font-weight:800; letter-spacing:.5px;}
+  .scard.gift.grand{background:linear-gradient(135deg,#ffd1e6,#ff8fc0); color:#9c1f5c; box-shadow:0 6px 18px rgba(232,74,127,.42);}
+  .scard.grandlocked{background:linear-gradient(135deg,#fff0f6,#ffd1e6); color:#9c1f5c; border:2px dashed #e84a7f; cursor:default; box-shadow:0 5px 16px rgba(232,74,127,.25);}
+  .scard.grandlocked:hover{transform:none;}
+  .scard.grandlocked .sface{font-size:24px;}
+  .scard.grandlocked .slbl{font-size:11px; font-weight:800;}
+  .scard.open{background:#fff; border:2px solid var(--leaf); color:var(--ink); box-shadow:0 4px 12px rgba(91,185,140,.18);}
+  .scard.open .sreward{font-size:13px; font-weight:700; line-height:1.55;}
+  .scard.open.grand{background:linear-gradient(135deg,#fff0f6,#ffe1ef); border-color:var(--rose); color:#b9326a;}
+  .scard.open.grand .sreward{font-size:13.5px;}
+  .overlay{position:fixed; inset:0; background:rgba(40,25,45,.5); display:none; align-items:center; justify-content:center; z-index:100;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff; border-radius:22px; padding:24px 24px 20px; width:min(380px,92vw); box-shadow:0 24px 60px rgba(0,0,0,.3); text-align:center;}
+  .modal .mi{font-size:34px;}
+  .modal h3{margin:8px 0 4px; font-size:20px;}
+  .modal p{margin:0 0 14px; font-size:13.5px; color:#857a8c; line-height:1.7;}
+  .modal input{width:100%; font-family:inherit; font-size:18px; text-align:center; letter-spacing:3px; padding:12px; border:2px solid var(--line); border-radius:13px; margin-bottom:10px; outline:none;}
+  .modal input:focus{border-color:var(--violet);}
+  .modal .err{color:#d23f3f; font-size:13px; min-height:18px; margin-bottom:6px;}
+  .modal .btns{display:flex; gap:10px;}
+  .modal button{flex:1; font-family:inherit; font-weight:700; font-size:15px; padding:12px; border-radius:13px; border:none; cursor:pointer;}
+  .modal .ok{background:var(--leaf); color:#fff;}
+  .modal .cancel{background:#f1edf3; color:#7a6b80;}
+  .toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:#2f8f63; color:#fff; padding:12px 22px; border-radius:30px; font-weight:700; font-size:14px; opacity:0; transition:.3s; z-index:120; box-shadow:0 10px 26px rgba(0,0,0,.2);}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .foot{text-align:center; font-size:12.5px; color:#9c8fa3; margin-top:20px; line-height:1.9;}
+  @media(max-width:620px){ .stats{grid-template-columns:repeat(3,1fr);} .garden{grid-template-columns:repeat(8,1fr);} }
+</style>
+</head>
+<body class="locked">
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">🌷 حديقة الحفظ</div>
+    <div class="spacer"></div>
+    <div class="tabs" id="tabs"></div>
+    <button class="lockbtn" id="lockBtn">🔒 وضع الوالدين</button>
+    <div class="menu">
+      <button class="menu-btn" id="menuBtn">⋮</button>
+      <div class="menu-list" id="menuList">
+        <button id="mChangePin">🔑 تغيير كلمة السر</button>
+        <button id="mResetChild" class="danger">♻️ تصفير تقييم الاسم الحالي</button>
+        <button id="mResetAll" class="danger" style="display:none;">🧹 تصفير الجميع</button>
+      </div>
+    </div>
+  </div>
+  <div class="hero" id="hero">
+    <div class="crown">👑🌸</div>
+    <h1 id="heroName">—</h1>
+    <div class="sub">حفظ ومراجعة جزء عمّ — من سورة النّاس إلى سورة النّبأ</div>
+    <svg class="hills" viewBox="0 0 1000 46" preserveAspectRatio="none"><path d="M0 46 V22 Q250 0 500 18 T1000 16 V46 Z" fill="#fffdfa"/></svg>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="card racecard" id="raceCard" style="display:none;">
+    <h3>🏁 سباق الحفظ — مين الأسبق؟</h3>
+    <div class="prize">🏆 الجائزة: <b>١٠٠ ريال 💰</b> لأول من يختم جزء عمّ!</div>
+    <div id="raceBody"></div>
+  </div>
+  <div class="infoband">
+    <div class="card legend">
+      <h3>التقييم</h3>
+      <div class="legrow-wrap">
+        <div class="lgitem ex"><span class="dot ex"></span><div class="lgtxt"><b>ممتاز</b><small>بلا أخطاء</small></div></div>
+        <div class="lgitem go"><span class="dot go"></span><div class="lgtxt"><b>جيد</b><small>خطأ واحد</small></div></div>
+        <div class="lgitem we"><span class="dot we"></span><div class="lgtxt"><b>ضعيف</b><small>خطآن</small></div></div>
+        <div class="lgitem re"><span class="dot re"></span><div class="lgtxt"><b>إعادة</b><small>٣ أخطاء فأكثر (يُعاد مرة أخرى)</small></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tablecard">
+    <table>
+      <thead><tr><th>اليوم</th><th>الحفظ الجديد</th><th>المراجعة</th><th>تاريخ التسميع</th><th>التقييم</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="card gardencard">
+    <h3 id="gardenTitle">🎁 افتحي مفاجأة كل يوم بعد التسميع بإتقان!</h3>
+    <div class="garden" id="garden"></div>
+  </div>
+  <div class="foot" id="footDua">🌼 «اللهم اجعلها من أهل القرآن وزيّنها به»</div>
+</div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+"use strict";
+/* ====== CONFIG ====== */
+var FIREBASE_CONFIG={apiKey:"AIzaSyCC3_6ExKp3bEAl541ZFkzY3s1qkWlgSp0",authDomain:"hifz-garden-546de.firebaseapp.com",databaseURL:"https://hifz-garden-546de-default-rtdb.firebaseio.com",projectId:"hifz-garden-546de",appId:"1:84779885819:web:43d61ef642747ee123bc5e"};
+var CHILDREN=[{key:"ghada",name:"غادة",theme:"violet",seed:73101,g:"f"},{key:"ghadeer",name:"غدير",theme:"rose",seed:99041,g:"f"}];
+var SHOW_RACE=false;
+/* ==================== */
+var THEMES={
+ violet:{tab:'#8a5cd1', g1:'#b18cf0', g2:'#8a5cd1', soft:'#faf7ff'},
+ rose:{tab:'#e84a7f', g1:'#ff7eb3', g2:'#e84a7f', soft:'#fff7fb'},
+ teal:{tab:'#1fae9c', g1:'#5fd6c8', g2:'#1fae9c', soft:'#f0fbf9'},
+ amber:{tab:'#e0922b', g1:'#ffc66e', g2:'#e89a33', soft:'#fff8ec'}
+};
+var DAYS=[
+ {d:1,  pg:604, s:'الإخلاص · الفَلَق · النَّاس'},
+ {d:2,  pg:603, s:'الكافِرون · النَّصر · المَسَد'},
+ {d:3,  pg:602, s:'قُريش · الماعون · الكَوثَر'},
+ {d:4,  pg:601, s:'العَصر · الهُمَزة · الفِيل'},
+ {d:5,  pg:600, s:'القارِعة · التَّكاثُر'},
+ {d:6,  pg:599, s:'الزَّلزَلة · العادِيات'},
+ {d:7,  pg:598, s:'القَدْر · البَيِّنة'},
+ {d:8,  pg:597, s:'التِّين · العَلَق'},
+ {d:9,  pg:596, s:'الضُّحى · الشَّرح'},
+ {d:10, pg:595, s:'الشَّمس · اللَّيل'},
+ {d:11, pg:594, s:'البَلَد'},
+ {d:12, pg:593, s:'الفَجر'},
+ {d:13, pg:592, s:'الغاشِية'},
+ {d:14, pg:591, s:'الطّارِق · الأعلى'},
+ {d:15, pg:590, s:'البُروج'},
+ {d:16, pg:589, s:'الانشِقاق'},
+ {d:17, pg:588, s:'المُطَفِّفِين (٧–٣٦)'},
+ {d:18, pg:587, s:'الانفِطار · المُطَفِّفِين (١–٦)'},
+ {d:19, pg:586, s:'التَّكوير'},
+ {d:20, pg:585, s:'عَبَس'},
+ {d:21, pg:584, s:'النّازِعات (١٦–٤٦)'},
+ {d:22, pg:583, s:'النَّبَأ (٣١–٤٠) · النّازِعات (١–١٥)'},
+ {d:23, pg:582, s:'النَّبَأ (١–٣٠)'}
+];
+function toAr(n){return String(n).replace(/[0-9]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[d];});}
+DAYS.forEach(function(x,i){
+  var p=[];
+  if(i>=1) p.push('ص'+toAr(DAYS[i-1].pg)+': '+DAYS[i-1].s);
+  if(i>=2) p.push('ص'+toAr(DAYS[i-2].pg)+': '+DAYS[i-2].s);
+  x.rev = p.length ? p.join('  —  ') : '—';
+});
+var REWARDS_F=[
+  'استمري يا حلوة! 💗','اختاري سناك تحبيه اليوم 🍫','حفظك ومراجعتك تفرح القلب 💖',
+  'ساعة إضافية بالآيباد 📱','إنجازك يكبر كل يوم 🌱','ملصق نجمة على لوحة الإنجاز ⭐',
+  'أنتي قدها وقدود 💪','5 ريال 💵','ما أجملك 🌸','اختاري لعبة نلعبها سوا 🎲',
+  'الله يخليك لنا 🤲','اختاري العصير اللي تحبيه 🧃','كل صفحة تحفظيها تقربك من الله 🕌',
+  'فخورين فيك جداً 🥹','اختاري المطعم اللي نروح له بالويكند 🍽️','بطلتنا 🏆',
+  'أنتي مثال الاجتهاد والهمة 🌟','نروح البقالة سوا 🛒','إنجاز اليوم يستحق التصفيق 👏',
+  'اختاري وجبة خفيفة للعائلة 🍿','إلى الأمام 🚀','تقدم رائع ✨'
+];
+var REWARDS_M=[
+  'استمر يا بطل! 💙','اختر سناك تحبه اليوم 🍫','حفظك ومراجعتك تفرح القلب 💙',
+  'ساعة إضافية بالآيباد 📱','إنجازك يكبر كل يوم 🌱','ملصق نجمة على لوحة الإنجاز ⭐',
+  'أنت قدها وقدود 💪','5 ريال 💵','ما شاء الله عليك 🌟','اختر لعبة نلعبها سوا 🎲',
+  'الله يخليك لنا 🤲','اختر العصير اللي تحبه 🧃','كل صفحة تحفظها تقربك من الله 🕌',
+  'فخورين فيك جداً 🥹','اختر المطعم اللي نروح له بالويكند 🍽️','بطلنا 🏆',
+  'أنت مثال الاجتهاد والهمة 🌟','نروح البقالة سوا 🛒','إنجاز اليوم يستحق التصفيق 👏',
+  'اختر وجبة خفيفة للعائلة 🍿','إلى الأمام 🚀','تقدم رائع ✨'
+];
+var GRAND='🎉🎊 المفاجأة الكبرى: احتفال ختم جزء عمّ';
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+function seededShuffle(arr,seed){var a=arr.slice();var rng=mulberry32(seed);for(var i=a.length-1;i>0;i--){var j=Math.floor(rng()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var LEVELS=['ex','go','we','re'];
+var LV_AR={ex:'ممتاز',go:'جيد',we:'ضعيف',re:'إعادة'};
+
+var REWARD_MAP={}, opened={}, data={};
+CHILDREN.forEach(function(c){ REWARD_MAP[c.key]=seededShuffle(c.g==='m'?REWARDS_M:REWARDS_F,c.seed).concat([GRAND]); opened[c.key]={}; data[c.key]={}; });
+function childByKey(k){ for(var i=0;i<CHILDREN.length;i++){ if(CHILDREN[i].key===k) return CHILDREN[i]; } return CHILDREN[0]; }
+function isM(){ return childByKey(current).g==='m'; }
+function gtxt(f,m){ return isM()? m : f; }
+
+/* ===== Firebase (realtime) ===== */
+var db=null, pinValue=null, current=CHILDREN[0].key, unlocked=false;
+firebase.initializeApp(FIREBASE_CONFIG);
+db=firebase.database();
+function startRealtime(){
+  CHILDREN.forEach(function(c){
+    db.ref('boards/'+c.key).on('value', function(snap){ data[c.key]=snap.val()||{}; render(); });
+  });
+  db.ref('pin').on('value', function(snap){ pinValue=snap.val()||null; });
+}
+function today(){var t=new Date(); return toAr(t.getFullYear())+'/'+toAr(t.getMonth()+1)+'/'+toAr(t.getDate());}
+
+function setRating(day, level){
+  if(!unlocked){ toast('🔒 التقييم للوالدين فقط — أدخل كلمة السر'); return; }
+  var cur=(data[current]||{})[day];
+  if(cur && cur.rating===level){ db.ref('boards/'+current+'/'+day).remove(); }
+  else { db.ref('boards/'+current+'/'+day).set({rating:level, date:(cur&&cur.date)||today()}); }
+}
+function childStats(key){
+  var obj=data[key]||{}; var done=0,ex=0,go=0,we=0,re=0,k;
+  for(k in obj){ if(!obj[k])continue; var r=obj[k].rating; if(r==='ex'){done++;ex++;}else if(r==='go'){done++;go++;}else if(r==='we'){done++;we++;}else if(r==='re'){re++;} }
+  return {done:done,ex:ex,go:go,we:we,re:re,pts:ex*3+go*2+we};
+}
+function buildTabs(){
+  var t=document.getElementById('tabs');
+  t.innerHTML=CHILDREN.map(function(c){ return '<button class="tab" data-child="'+c.key+'">'+c.name+'</button>'; }).join('');
+  var btns=t.querySelectorAll('.tab');
+  for(var i=0;i<btns.length;i++){ (function(el){ el.onclick=function(){ current=el.getAttribute('data-child'); render(); }; })(btns[i]); }
+  if(SHOW_RACE){ document.getElementById('raceCard').style.display=''; document.getElementById('mResetAll').style.display=''; }
+}
+function renderRace(){
+  if(!SHOW_RACE) return;
+  var rows=CHILDREN.map(function(c){ var s=childStats(c.key); return {c:c, done:s.done, ex:s.ex, pts:s.pts}; });
+  rows.sort(function(a,b){ return (b.done-a.done) || (b.pts-a.pts); });
+  var medals=['🥇','🥈','🥉',''];
+  document.getElementById('raceBody').innerHTML=rows.map(function(r,i){
+    var th=THEMES[r.c.theme]||THEMES.violet; var pct=Math.round(r.done/DAYS.length*100);
+    return '<div class="racerow'+(i===0&&r.done>0?' lead':'')+'">'+
+      '<div class="rkname"><span class="rkmedal">'+(medals[i]||'')+'</span><span style="color:'+th.tab+'">'+r.c.name+'</span></div>'+
+      '<div class="rktrack"><div class="rkfill" style="width:'+Math.max(pct,4)+'%;background:'+th.tab+'"><span class="rkflower">🌷</span></div></div>'+
+      '<div class="rkmeta">'+toAr(r.done)+'/٢٣ · ⭐'+toAr(r.ex)+'</div>'+
+    '</div>';
+  }).join('');
+}
+function render(){
+  document.body.classList.toggle('locked', !unlocked);
+  var ch=childByKey(current); var th=THEMES[ch.theme]||THEMES.violet;
+  document.documentElement.style.setProperty('--accent', th.tab);
+  document.documentElement.style.setProperty('--accent-soft', th.soft);
+  document.getElementById('hero').style.background='linear-gradient(135deg,'+th.g1+','+th.g2+' 72%)';
+  document.getElementById('heroName').textContent=ch.name;
+  var btns=document.querySelectorAll('.tab');
+  for(var ti=0;ti<btns.length;ti++){ var on=btns[ti].getAttribute('data-child')===current; btns[ti].classList.toggle('active',on); btns[ti].style.background= on? th.tab : 'transparent'; }
+  var lb=document.getElementById('lockBtn'); lb.classList.toggle('open',unlocked); lb.innerHTML= unlocked? '🔓 وضع الوالدين مُفعّل' : '🔒 وضع الوالدين';
+  document.getElementById('gardenTitle').textContent = gtxt('🎁 افتحي مفاجأة كل يوم بعد التسميع بإتقان!','🎁 افتح مفاجأة كل يوم بعد التسميع بإتقان!');
+  document.getElementById('footDua').textContent = gtxt('🌼 «اللهم اجعلها من أهل القرآن وزيّنها به»','🌼 «اللهم اجعله من أهل القرآن وزيّنه به»');
+
+  var st=childStats(current);
+  document.getElementById('stats').innerHTML=
+    '<div class="stat done"><div class="v">'+toAr(st.done)+'<span style="font-size:13px;color:#bcaec2">/٢٣</span></div><div class="l">أيام مُنجزة</div></div>'+
+    '<div class="stat ex"><div class="v">'+toAr(st.ex)+'</div><div class="l">🌟 ممتاز</div></div>'+
+    '<div class="stat go"><div class="v">'+toAr(st.go)+'</div><div class="l">🌸 جيد</div></div>'+
+    '<div class="stat we"><div class="v">'+toAr(st.we)+'</div><div class="l">🍂 ضعيف</div></div>'+
+    '<div class="stat re"><div class="v">'+toAr(st.re)+'</div><div class="l">🔁 إعادة</div></div>';
+  renderRace();
+
+  var tb=document.getElementById('tbody');
+  tb.innerHTML=DAYS.map(function(x){
+    var rec=data[current][x.d];
+    var bubs=LEVELS.map(function(l){ return '<span class="bub '+l+(rec&&rec.rating===l?' sel':'')+'" data-day="'+x.d+'" data-lv="'+l+'" title="'+LV_AR[l]+'"></span>'; }).join('');
+    return '<tr class="row'+(rec?' done':'')+'">'+
+      '<td><span class="dayno">'+toAr(x.d)+'</span></td>'+
+      '<td><span class="sname">'+x.s+'</span><div class="pgtag">صفحة '+toAr(x.pg)+'</div></td>'+
+      '<td class="rev">'+x.rev+'</td>'+
+      '<td class="date">'+(rec?rec.date:'—')+'</td>'+
+      '<td><div class="rate">'+bubs+'</div></td>'+
+    '</tr>';
+  }).join('');
+  var bubsEls=tb.querySelectorAll('.bub');
+  for(var b=0;b<bubsEls.length;b++){ (function(el){ el.onclick=function(){ setRating(parseInt(el.getAttribute('data-day'),10), el.getAttribute('data-lv')); }; })(bubsEls[b]); }
+
+  var gEl=document.getElementById('garden');
+  gEl.innerHTML=DAYS.map(function(x){
+    var rec=data[current][x.d]; var reward=REWARD_MAP[current][x.d-1]; var grand=(x.d===DAYS.length)?' grand':'';
+    if(!rec){
+      if(grand){ return '<div class="scard grandlocked" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🎁</div><div class="slbl">المفاجأة الكبرى</div></div>'; }
+      return '<div class="scard locked" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🌱</div><div class="slbl">يوم '+toAr(x.d)+'</div></div>';
+    }
+    if(rec.rating==='re'){ return '<div class="scard redo" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🔁</div><div class="slbl">'+gtxt('إعادة — أتقنيه أولاً','إعادة — أتقنه أولاً')+'</div></div>'; }
+    if(opened[current][x.d]){ return '<div class="scard open'+grand+'" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sreward">'+reward+'</div></div>'; }
+    if(grand){ return '<div class="scard gift grand" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🎁</div><div class="slbl">'+gtxt('المفاجأة الكبرى — اكشطي!','المفاجأة الكبرى — اكشط!')+'</div></div>'; }
+    return '<div class="scard gift" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🎁</div><div class="slbl">'+gtxt('اكشطي!','اكشط!')+'</div></div>';
+  }).join('');
+  var cards=gEl.querySelectorAll('.scard');
+  for(var c=0;c<cards.length;c++){ (function(el){ el.onclick=function(){ openCard(parseInt(el.getAttribute('data-day'),10)); }; })(cards[c]); }
+}
+function openCard(day){
+  var rec=data[current][day];
+  if(!rec){ if(day===DAYS.length){ toast(gtxt('🎁 اوصلي لليوم '+toAr(day)+' وتنفتح لكِ المفاجأة الكبرى!','🎁 اوصل لليوم '+toAr(day)+' وتنفتح لك المفاجأة الكبرى!')); } else { toast(gtxt('🌱 احفظي يوم '+toAr(day)+' أولاً، ثم اكشطي مفاجأتك!','🌱 احفظ يوم '+toAr(day)+' أولاً، ثم اكشط مفاجأتك!')); } return; }
+  if(rec.rating==='re'){ toast(gtxt('🔁 يوم إعادة — أتقنيه أولاً وبتطلع لكِ المفاجأة!','🔁 يوم إعادة — أتقنه أولاً وبتطلع لك المفاجأة!')); return; }
+  opened[current][day]=!opened[current][day]; render();
+}
+
+/* ===== modals ===== */
+var overlay=document.getElementById('overlay'), modal=document.getElementById('modal');
+function closeModal(){overlay.classList.remove('show'); modal.innerHTML='';}
+overlay.addEventListener('click',function(e){ if(e.target===overlay) closeModal(); });
+function modalCreate(){
+  modal.innerHTML='<div class="mi">🔑</div><h3>أنشئ كلمة سر الوالدين</h3><p>كلمة سر مشتركة — تستخدمها أنت والأم من أي جهاز.</p><input id="p1" type="password" placeholder="كلمة السر"><input id="p2" type="password" placeholder="تأكيد كلمة السر"><div class="err" id="merr"></div><div class="btns"><button class="cancel" id="mc">إلغاء</button><button class="ok" id="mo">حفظ وتفعيل</button></div>';
+  overlay.classList.add('show'); setTimeout(function(){document.getElementById('p1').focus();},50);
+  document.getElementById('mc').onclick=closeModal;
+  document.getElementById('mo').onclick=function(){
+    var a=document.getElementById('p1').value.trim(), b=document.getElementById('p2').value.trim(), err=document.getElementById('merr');
+    if(a.length<4){err.textContent='كلمة السر قصيرة (٤ خانات على الأقل)';return;}
+    if(a!==b){err.textContent='الكلمتان غير متطابقتين';return;}
+    db.ref('pin').set(a).then(function(){ unlocked=true; closeModal(); render(); toast('✅ تم التفعيل — يمكنك التقييم الآن'); });
+  };
+}
+function modalEnter(realPin){
+  modal.innerHTML='<div class="mi">🔒</div><h3>وضع الوالدين</h3><p>أدخل كلمة السر لتفعيل التقييم.</p><input id="p1" type="password" placeholder="كلمة السر"><div class="err" id="merr"></div><div class="btns"><button class="cancel" id="mc">إلغاء</button><button class="ok" id="mo">دخول</button></div>';
+  overlay.classList.add('show'); setTimeout(function(){document.getElementById('p1').focus();},50);
+  function submit(){ var a=document.getElementById('p1').value.trim(); if(a===realPin){ unlocked=true; closeModal(); render(); toast('🔓 مرحباً — وضع الوالدين مُفعّل'); } else { document.getElementById('merr').textContent='كلمة السر غير صحيحة'; } }
+  document.getElementById('mc').onclick=closeModal;
+  document.getElementById('mo').onclick=submit;
+  document.getElementById('p1').addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
+}
+function modalChangePin(){
+  if(!pinValue){ modalCreate(); return; }
+  modal.innerHTML='<div class="mi">🔑</div><h3>تغيير كلمة السر</h3><p>أدخل الحالية ثم الجديدة.</p><input id="p0" type="password" placeholder="الحالية"><input id="p1" type="password" placeholder="الجديدة (٤+)"><div class="err" id="merr"></div><div class="btns"><button class="cancel" id="mc">إلغاء</button><button class="ok" id="mo">حفظ</button></div>';
+  overlay.classList.add('show');
+  document.getElementById('mc').onclick=closeModal;
+  document.getElementById('mo').onclick=function(){
+    var cur=document.getElementById('p0').value.trim(), nw=document.getElementById('p1').value.trim(), err=document.getElementById('merr');
+    if(cur!==pinValue){err.textContent='الكلمة الحالية غير صحيحة';return;}
+    if(nw.length<4){err.textContent='الكلمة الجديدة قصيرة';return;}
+    db.ref('pin').set(nw).then(function(){ closeModal(); toast('✅ تم تغيير كلمة السر'); });
+  };
+}
+function lockToggle(){
+  if(unlocked){ unlocked=false; render(); toast('🔒 تم قفل التقييم'); return; }
+  if(pinValue) modalEnter(pinValue); else modalCreate();
+}
+var menuList=document.getElementById('menuList');
+document.getElementById('menuBtn').onclick=function(e){e.stopPropagation(); menuList.classList.toggle('show');};
+document.addEventListener('click',function(){menuList.classList.remove('show');});
+document.getElementById('mChangePin').onclick=modalChangePin;
+document.getElementById('mResetChild').onclick=function(){
+  if(!unlocked){ toast('🔒 التصفير للوالدين فقط'); return; }
+  var ch=childByKey(current);
+  modal.innerHTML='<div class="mi">♻️</div><h3>تصفير التقييم</h3><p>سيتم مسح كل تقييمات «'+ch.name+'». لا يمكن التراجع.</p><div class="btns"><button class="cancel" id="mc">إلغاء</button><button class="ok" id="mo" style="background:#e35454">نعم، صفّر</button></div>';
+  overlay.classList.add('show');
+  document.getElementById('mc').onclick=closeModal;
+  document.getElementById('mo').onclick=function(){ db.ref('boards/'+ch.key).remove().then(function(){ closeModal(); toast('♻️ تم التصفير'); }); };
+};
+document.getElementById('mResetAll').onclick=function(){
+  if(!unlocked){ toast('🔒 التصفير للوالدين فقط'); return; }
+  var nm=CHILDREN.map(function(c){return c.name;}).join('، ');
+  modal.innerHTML='<div class="mi">🧹</div><h3>تصفير الجميع</h3><p>سيتم مسح كل تقييمات: <b>'+nm+'</b> — والبدء من جديد. لا يمكن التراجع.</p><div class="btns"><button class="cancel" id="mc">إلغاء</button><button class="ok" id="mo" style="background:#e35454">نعم، صفّر الجميع</button></div>';
+  overlay.classList.add('show');
+  document.getElementById('mc').onclick=closeModal;
+  document.getElementById('mo').onclick=function(){
+    Promise.all(CHILDREN.map(function(c){ return db.ref('boards/'+c.key).remove(); })).then(function(){ closeModal(); toast('🧹 تم تصفير الجميع — بالتوفيق للجميع!'); });
+  };
+};
+document.getElementById('lockBtn').onclick=lockToggle;
+function toast(msg){var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2400);}
+
+buildTabs();
+render();
+startRealtime();
+</script>
+</body>
+</html>
