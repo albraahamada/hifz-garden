@@ -166,13 +166,13 @@
   <div class="hero" id="hero">
     <div class="crown">👑🌸</div>
     <h1 id="heroName">—</h1>
-    <div class="sub">حفظ ومراجعة جزء عمّ — من سورة النّاس إلى سورة النّبأ</div>
+    <div class="sub" id="heroSub">حفظ ومراجعة جزء عمّ — من سورة النّاس إلى سورة النّبأ</div>
     <svg class="hills" viewBox="0 0 1000 46" preserveAspectRatio="none"><path d="M0 46 V22 Q250 0 500 18 T1000 16 V46 Z" fill="#fffdfa"/></svg>
   </div>
   <div class="stats" id="stats"></div>
   <div class="card racecard" id="raceCard" style="display:none;">
     <h3>🏁 سباق الحفظ — مين الأسبق؟</h3>
-    <div class="prize">🏆 الجائزة: <b>١٠٠ ريال 💰</b> لأول من يختم جزء عمّ!</div>
+    <div class="prize">🏆 الجائزة: <b>١٠٠ ريال 💰</b> لأول من يختم جزءه!</div>
     <div id="raceBody"></div>
   </div>
   <div class="infoband">
@@ -206,7 +206,7 @@
 "use strict";
 /* ====== CONFIG ====== */
 var FIREBASE_CONFIG={apiKey:"AIzaSyCC3_6ExKp3bEAl541ZFkzY3s1qkWlgSp0",authDomain:"hifz-garden-546de.firebaseapp.com",databaseURL:"https://hifz-garden-546de-default-rtdb.firebaseio.com",projectId:"hifz-garden-546de",appId:"1:84779885819:web:43d61ef642747ee123bc5e"};
-var CHILDREN=[{key:"ghada",name:"غادة",theme:"violet",seed:73101,g:"f"},{key:"ghadeer",name:"غدير",theme:"rose",seed:99041,g:"f"},{key:"halawmah",name:"حلومة",theme:"teal",seed:51237,g:"f"},{key:"mulook",name:"ملوك",theme:"amber",seed:88123,g:"m"}];
+var CHILDREN=[{key:"ghada",name:"غادة",theme:"violet",seed:73101,g:"f",juz:"amma"},{key:"ghadeer",name:"غدير",theme:"rose",seed:99041,g:"f",juz:"amma"},{key:"halawmah",name:"حلومة",theme:"teal",seed:51237,g:"f",juz:"tabarak"},{key:"mulook",name:"ملوك",theme:"amber",seed:88123,g:"m",juz:"tabarak"}];
 var SHOW_RACE=true;
 /* ==================== */
 var THEMES={
@@ -215,7 +215,7 @@ var THEMES={
  teal:{tab:'#1fae9c', g1:'#5fd6c8', g2:'#1fae9c', soft:'#f0fbf9'},
  amber:{tab:'#e0922b', g1:'#ffc66e', g2:'#e89a33', soft:'#fff8ec'}
 };
-var DAYS=[
+var DAYS_AMMA=[
  {d:1,  pg:604, s:'الإخلاص · الفَلَق · النَّاس'},
  {d:2,  pg:603, s:'الكافِرون · النَّصر · المَسَد'},
  {d:3,  pg:602, s:'قُريش · الماعون · الكَوثَر'},
@@ -241,12 +241,34 @@ var DAYS=[
  {d:23, pg:582, s:'النَّبَأ (١–٣٠)'}
 ];
 function toAr(n){return String(n).replace(/[0-9]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[d];});}
-DAYS.forEach(function(x,i){
-  var p=[];
-  if(i>=1) p.push('ص'+toAr(DAYS[i-1].pg)+': '+DAYS[i-1].s);
-  if(i>=2) p.push('ص'+toAr(DAYS[i-2].pg)+': '+DAYS[i-2].s);
-  x.rev = p.length ? p.join('  —  ') : '—';
-});
+var DAYS_TABARAK=[
+ {d:1,  pg:581, s:'المُرسَلات'},
+ {d:2,  pg:580, s:'المُرسَلات'},
+ {d:3,  pg:579, s:'الإنسان'},
+ {d:4,  pg:578, s:'الإنسان'},
+ {d:5,  pg:577, s:'القِيامة'},
+ {d:6,  pg:576, s:'المُدَّثِّر'},
+ {d:7,  pg:575, s:'المُدَّثِّر'},
+ {d:8,  pg:574, s:'المُزَّمِّل'},
+ {d:9,  pg:573, s:'الجِنّ'},
+ {d:10, pg:572, s:'الجِنّ'},
+ {d:11, pg:571, s:'نُوح'},
+ {d:12, pg:570, s:'نُوح'},
+ {d:13, pg:569, s:'المَعارِج'},
+ {d:14, pg:568, s:'المَعارِج'},
+ {d:15, pg:567, s:'الحاقّة'},
+ {d:16, pg:566, s:'الحاقّة'},
+ {d:17, pg:565, s:'القَلَم'},
+ {d:18, pg:564, s:'القَلَم'},
+ {d:19, pg:563, s:'المُلْك'},
+ {d:20, pg:562, s:'المُلْك'}
+];
+function computeRev(arr){ arr.forEach(function(x,i){ var p=[]; if(i>=1) p.push('ص'+toAr(arr[i-1].pg)+': '+arr[i-1].s); if(i>=2) p.push('ص'+toAr(arr[i-2].pg)+': '+arr[i-2].s); x.rev = p.length ? p.join('  —  ') : '—'; }); }
+computeRev(DAYS_AMMA); computeRev(DAYS_TABARAK);
+var JUZ={
+ amma:{days:DAYS_AMMA, sub:'حفظ ومراجعة جزء عمّ — من سورة النّاس إلى سورة النّبأ', name:'جزء عمّ'},
+ tabarak:{days:DAYS_TABARAK, sub:'حفظ ومراجعة جزء تبارك — من سورة المُرسَلات إلى سورة المُلك', name:'جزء تبارك'}
+};
 var REWARDS_F=[
   'استمري يا حلوة! 💗','اختاري سناك تحبيه اليوم 🍫','حفظك ومراجعتك تفرح القلب 💖',
   'ساعة إضافية بالآيباد 📱','إنجازك يكبر كل يوم 🌱','ملصق نجمة على لوحة الإنجاز ⭐',
@@ -272,8 +294,15 @@ var LEVELS=['ex','go','we','re'];
 var LV_AR={ex:'ممتاز',go:'جيد',we:'ضعيف',re:'إعادة'};
 
 var REWARD_MAP={}, opened={}, data={};
-CHILDREN.forEach(function(c){ REWARD_MAP[c.key]=seededShuffle(c.g==='m'?REWARDS_M:REWARDS_F,c.seed).concat([GRAND]); opened[c.key]={}; data[c.key]={}; });
+CHILDREN.forEach(function(c){
+  var jz=JUZ[c.juz]||JUZ.amma; var total=jz.days.length;
+  var rwds=seededShuffle(c.g==='m'?REWARDS_M:REWARDS_F, c.seed).slice(0, total-1);
+  rwds.push('🎉🎊 المفاجأة الكبرى: احتفال ختم '+jz.name);
+  REWARD_MAP[c.key]=rwds; opened[c.key]={}; data[c.key]={};
+});
 function childByKey(k){ for(var i=0;i<CHILDREN.length;i++){ if(CHILDREN[i].key===k) return CHILDREN[i]; } return CHILDREN[0]; }
+function curJuz(){ return JUZ[(childByKey(current)||{}).juz]||JUZ.amma; }
+function curDays(){ return curJuz().days; }
 function isM(){ return childByKey(current).g==='m'; }
 function gtxt(f,m){ return isM()? m : f; }
 
@@ -313,11 +342,11 @@ function renderRace(){
   rows.sort(function(a,b){ return (b.done-a.done) || (b.pts-a.pts); });
   var medals=['🥇','🥈','🥉',''];
   document.getElementById('raceBody').innerHTML=rows.map(function(r,i){
-    var th=THEMES[r.c.theme]||THEMES.violet; var pct=Math.round(r.done/DAYS.length*100);
+    var th=THEMES[r.c.theme]||THEMES.violet; var tot=(JUZ[r.c.juz]||JUZ.amma).days.length; var pct=Math.round(r.done/tot*100);
     return '<div class="racerow'+(i===0&&r.done>0?' lead':'')+'">'+
       '<div class="rkname"><span class="rkmedal">'+(medals[i]||'')+'</span><span style="color:'+th.tab+'">'+r.c.name+'</span></div>'+
       '<div class="rktrack"><div class="rkfill" style="width:'+Math.max(pct,4)+'%;background:'+th.tab+'"><span class="rkflower">🌷</span></div></div>'+
-      '<div class="rkmeta">'+toAr(r.done)+'/٢٣ · ⭐'+toAr(r.ex)+'</div>'+
+      '<div class="rkmeta">'+toAr(r.done)+'/'+toAr(tot)+' · ⭐'+toAr(r.ex)+'</div>'+
     '</div>';
   }).join('');
 }
@@ -328,6 +357,7 @@ function render(){
   document.documentElement.style.setProperty('--accent-soft', th.soft);
   document.getElementById('hero').style.background='linear-gradient(135deg,'+th.g1+','+th.g2+' 72%)';
   document.getElementById('heroName').textContent=ch.name;
+  document.getElementById('heroSub').textContent=curJuz().sub;
   var btns=document.querySelectorAll('.tab');
   for(var ti=0;ti<btns.length;ti++){ var on=btns[ti].getAttribute('data-child')===current; btns[ti].classList.toggle('active',on); btns[ti].style.background= on? th.tab : 'transparent'; }
   var lb=document.getElementById('lockBtn'); lb.classList.toggle('open',unlocked); lb.innerHTML= unlocked? '🔓 وضع الوالدين مُفعّل' : '🔒 وضع الوالدين';
@@ -336,7 +366,7 @@ function render(){
 
   var st=childStats(current);
   document.getElementById('stats').innerHTML=
-    '<div class="stat done"><div class="v">'+toAr(st.done)+'<span style="font-size:13px;color:#bcaec2">/٢٣</span></div><div class="l">أيام مُنجزة</div></div>'+
+    '<div class="stat done"><div class="v">'+toAr(st.done)+'<span style="font-size:13px;color:#bcaec2">/'+toAr(curDays().length)+'</span></div><div class="l">أيام مُنجزة</div></div>'+
     '<div class="stat ex"><div class="v">'+toAr(st.ex)+'</div><div class="l">🌟 ممتاز</div></div>'+
     '<div class="stat go"><div class="v">'+toAr(st.go)+'</div><div class="l">🌸 جيد</div></div>'+
     '<div class="stat we"><div class="v">'+toAr(st.we)+'</div><div class="l">🍂 ضعيف</div></div>'+
@@ -344,7 +374,7 @@ function render(){
   renderRace();
 
   var tb=document.getElementById('tbody');
-  tb.innerHTML=DAYS.map(function(x){
+  tb.innerHTML=curDays().map(function(x){
     var rec=data[current][x.d];
     var bubs=LEVELS.map(function(l){ return '<span class="bub '+l+(rec&&rec.rating===l?' sel':'')+'" data-day="'+x.d+'" data-lv="'+l+'" title="'+LV_AR[l]+'"></span>'; }).join('');
     return '<tr class="row'+(rec?' done':'')+'">'+
@@ -359,8 +389,8 @@ function render(){
   for(var b=0;b<bubsEls.length;b++){ (function(el){ el.onclick=function(){ setRating(parseInt(el.getAttribute('data-day'),10), el.getAttribute('data-lv')); }; })(bubsEls[b]); }
 
   var gEl=document.getElementById('garden');
-  gEl.innerHTML=DAYS.map(function(x){
-    var rec=data[current][x.d]; var reward=REWARD_MAP[current][x.d-1]; var grand=(x.d===DAYS.length)?' grand':'';
+  gEl.innerHTML=curDays().map(function(x){
+    var rec=data[current][x.d]; var reward=REWARD_MAP[current][x.d-1]; var grand=(x.d===curDays().length)?' grand':'';
     if(!rec){
       if(grand){ return '<div class="scard grandlocked" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🎁</div><div class="slbl">المفاجأة الكبرى</div></div>'; }
       return '<div class="scard locked" data-day="'+x.d+'"><span class="pn">'+toAr(x.d)+'</span><div class="sface">🌱</div><div class="slbl">يوم '+toAr(x.d)+'</div></div>';
@@ -375,7 +405,7 @@ function render(){
 }
 function openCard(day){
   var rec=data[current][day];
-  if(!rec){ if(day===DAYS.length){ toast(gtxt('🎁 اوصلي لليوم '+toAr(day)+' وتنفتح لكِ المفاجأة الكبرى!','🎁 اوصل لليوم '+toAr(day)+' وتنفتح لك المفاجأة الكبرى!')); } else { toast(gtxt('🌱 احفظي يوم '+toAr(day)+' أولاً، ثم اكشطي مفاجأتك!','🌱 احفظ يوم '+toAr(day)+' أولاً، ثم اكشط مفاجأتك!')); } return; }
+  if(!rec){ if(day===curDays().length){ toast(gtxt('🎁 اوصلي لليوم '+toAr(day)+' وتنفتح لكِ المفاجأة الكبرى!','🎁 اوصل لليوم '+toAr(day)+' وتنفتح لك المفاجأة الكبرى!')); } else { toast(gtxt('🌱 احفظي يوم '+toAr(day)+' أولاً، ثم اكشطي مفاجأتك!','🌱 احفظ يوم '+toAr(day)+' أولاً، ثم اكشط مفاجأتك!')); } return; }
   if(rec.rating==='re'){ toast(gtxt('🔁 يوم إعادة — أتقنيه أولاً وبتطلع لكِ المفاجأة!','🔁 يوم إعادة — أتقنه أولاً وبتطلع لك المفاجأة!')); return; }
   opened[current][day]=!opened[current][day]; render();
 }
