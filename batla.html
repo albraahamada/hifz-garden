@@ -70,7 +70,7 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .tip{margin:var(--gap) 0 0;padding:14px 15px;border-radius:16px;
   background:linear-gradient(100deg,#efe9ff,#ffe9f2);border:1px solid var(--line)}
 .tip b{display:block;font-family:'Changa',sans-serif;font-size:13px;color:var(--grape);margin-bottom:3px}
-.tip span{font-size:13.5px;line-height:1.6}
+.tip span{display:block;font-size:13.5px;line-height:1.7}
 
 /* ===== مؤشر اليوم ===== */
 .scorerow{display:flex;align-items:center;gap:16px;margin:var(--gap) 0 0;
@@ -88,12 +88,12 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
   margin:26px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);font-weight:700}
 
 /* ===== العناصر ===== */
-.fajr{display:flex;align-items:baseline;gap:8px;padding:11px 14px;margin-bottom:9px;
+.fajr{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:11px 14px;margin-bottom:9px;
   border-radius:14px;background:#fff5e6;border:1px dashed #ffd591}
 .fajr .lab{font-weight:700;font-size:14px;color:#e29200}
-.fajr .dots{flex:1;border-bottom:2px dotted #ffd591;transform:translateY(-4px)}
+.fajr .dots{flex:1;border-bottom:2px dotted #ffd591;transform:translateY(-4px);min-width:14px}
 .fajr .val{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#e29200}
-.fajr .note{width:100%;font-size:11.5px;color:var(--muted);margin-top:4px}
+.fajr .note{width:100%;font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.6}
 
 .task{display:block;width:100%;background:var(--card);border:1px solid var(--line);
   border-radius:16px;padding:13px 14px;margin-bottom:9px;cursor:pointer;text-align:right;
@@ -117,11 +117,17 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .pts{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;
   background:linear-gradient(120deg,var(--grape),var(--rose));padding:2px 8px;border-radius:99px}
 .task.done .pts{background:var(--mint)}
-.detail{margin-top:10px;padding:11px 12px;border-radius:12px;background:#f7f2fb;font-size:13px;line-height:1.7}
-.detail .alt{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
-  font-size:12.5px;color:var(--muted)}
+.detail{display:block;margin-top:11px;padding:12px 13px;border-radius:12px;background:#f7f2fb;
+  font-size:13px;line-height:1.75}
+.detail .alt{display:block;margin-top:9px;padding-top:9px;border-top:1px solid var(--line);
+  font-size:12.5px;line-height:1.7;color:var(--muted)}
 .detail .alt b{color:var(--rose)}
-.hint{font-size:11.5px;color:var(--muted);margin:6px 0 0 31px}
+.genbtn{display:inline-block;margin-top:11px;cursor:pointer;
+  font-family:'Almarai',sans-serif;font-weight:800;font-size:12px;color:#fff;
+  background:linear-gradient(120deg,var(--grape),var(--rose));border:none;border-radius:99px;padding:7px 15px;
+  box-shadow:0 3px 10px rgba(255,93,151,.25)}
+.genbtn:active{transform:scale(.96)}
+.hint{display:block;font-size:11.5px;color:var(--muted);margin:7px 4px 0 4px;line-height:1.6}
 
 /* ===== لوحة الأسبوع ===== */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px 16px;
@@ -149,7 +155,7 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .review{margin-top:14px;padding:15px;border-radius:16px;
   background:linear-gradient(140deg,#ffe6f0,#efe9ff);border:1px solid var(--rose)}
 .review h4{font-family:'Changa',sans-serif;margin:0 0 6px;font-size:16px;color:var(--rose)}
-.review p{margin:0 0 12px;font-size:13px}
+.review p{margin:0 0 12px;font-size:13px;line-height:1.7}
 .review button{width:100%;padding:11px;border-radius:12px;border:1px solid var(--rose);
   cursor:pointer;font-family:'Almarai',sans-serif;font-weight:800;font-size:13px;background:#fff;color:var(--rose)}
 
@@ -252,34 +258,63 @@ const REWARDS=[
  {ic:'🎁',nm:'مكافأة حرة من اختيارك',need:80}
 ];
 
-/* الوجبة الأولى — [الأساسي, البديل إن لم تعجبك] */
-const MEAL1=[
- ['زبادي يوناني 200 غ + ملعقة صغيرة عسل + ملعقة كبيرة بذور كتان مطحونة','جبن قريش 4 ملاعق + طماطم + 7 حبات لوز'],
- ['بيضتان مسلوقتان + ربع حبة أفوكادو + خيارة','زبادي يوناني 200 غ + ملعقة بذور شيا + نصف موزة'],
- ['سكير 170 غ + نصف كوب توت أزرق + ملعقة بذور شيا','أومليت بيضتين بالسبانخ + شريحة جبن'],
- ['أومليت بيضتين بالسبانخ + شريحة خبز ساوردو','سكير 170 غ + ملعقة زبدة فول سوداني + تفاحة صغيرة'],
- ['زبادي يوناني 200 غ + ملعقة زبدة فول سوداني + رشة قرفة','بيضتان مسلوقتان + ربع حبة أفوكادو + خيارة'],
- ['بيضتان بملعقة زيت زيتون + شريحتا جبن قريش + طماطم','زبادي يوناني 200 غ + ملعقة صغيرة عسل + 10 حبات لوز'],
- ['سكير 170 غ + 10 حبات لوز + ملعقة صغيرة عسل','أومليت بيضتين بالطماطم + شريحة خبز أسمر']
-];
-const MEAL2=[
- ['صحن سلطة كبير + صدر دجاج مشوي بحجم كفك — ثم كوب رز بسمتي','شوربة عدس + دجاج مشوي + سلطة'],
- ['سلطة + سمكة مشوية متوسطة — ثم حبتا بطاطا مسلوقة','علبة تونة بالماء + سلطة كبيرة + نصف رغيف أسمر'],
- ['سلطة + لحم مشوي 150 غ — ثم كوب رز','كفتة بالفرن مع خضار + سلطة'],
- ['سلطة + دجاج — ثم صحن مكرونة متوسط','مكرونة بالخضار والتونة + سلطة'],
- ['شوربة خضار + دجاج — ثم صينية بطاطا','مسحّب دجاج + سلطة كبيرة'],
- ['سلطة + كوب فول أو حمص — ثم نصف رغيف','شكشوكة ببيضتين + خبز ساوردو'],
- ['سلطة + دجاج مشوي — ثم صينية خضار بالفرن','برجر لحم بيتي + خبز أسمر + سلطة']
-];
-const MEAL3=[
- ['كوبا شوربة خضار + بيضة مسلوقة','زبادي يوناني + خيار'],
- ['سلطة كبيرة + شريحتا جبن + 5 حبات لوز','شوربة دجاج صافية'],
- ['3 ملاعق لبنة + خيار وطماطم + نصف رغيف ساوردو','بيضتان مسلوقتان + خيار'],
- ['علبة تونة بالماء + سلطة خضراء','كوب شوربة عدس + سلطة صغيرة'],
- ['جاجيك: زبادي يوناني + خيار + جزر مبشور + ربع رغيف أسمر','سلطة كبيرة + شريحة جبن'],
- ['بيضتان مسلوقتان + طماطم وخيار','كوبا شوربة خضار'],
- ['كوب شوربة عدس + سلطة صغيرة','لبنة + خضار + ربع رغيف']
-];
+/* مخزون الوجبات — أول 7 = خطة الأيام، والباقي بدائل بنفس الفلسفة (بروتين + ألياف + دهون صحية) */
+const POOL={
+ m1:[
+  'زبادي يوناني 200 غ + ملعقة صغيرة عسل + ملعقة كبيرة بذور كتان مطحونة',
+  'بيضتان مسلوقتان + ربع حبة أفوكادو + خيارة',
+  'سكير 170 غ + نصف كوب توت أزرق + ملعقة بذور شيا',
+  'أومليت بيضتين بالسبانخ + شريحة خبز ساوردو',
+  'زبادي يوناني 200 غ + ملعقة زبدة فول سوداني + رشة قرفة',
+  'بيضتان بملعقة زيت زيتون + شريحتا جبن قريش + طماطم',
+  'سكير 170 غ + 10 حبات لوز + ملعقة صغيرة عسل',
+  'جبن قريش 4 ملاعق + طماطم + 7 حبات لوز',
+  'زبادي يوناني 200 غ + ملعقة بذور شيا + نصف موزة',
+  'أومليت بيضتين بالطماطم + شريحة خبز أسمر',
+  'لبنة 3 ملاعق + رشة زيت زيتون + خيار + ربع رغيف أسمر',
+  'بيضتان مخفوقتان بالفطر والسبانخ + شريحة جبن',
+  'توست أسمر + بيضة مسلوقة + شرائح أفوكادو',
+  'زبادي يوناني + ملعقة زبدة لوز + تفاحة مقطّعة + قرفة',
+  'سموذي: زبادي يوناني + نصف كوب توت + ملعقة بذور شيا',
+  'عجة الشوفان: بيضتان + ملعقتا شوفان + جبن قريش'
+ ],
+ m2:[
+  'صحن سلطة كبير + صدر دجاج مشوي بحجم كفك — ثم كوب رز بسمتي',
+  'سلطة + سمكة مشوية متوسطة — ثم حبتا بطاطا مسلوقة',
+  'سلطة + لحم مشوي 150 غ — ثم كوب رز',
+  'سلطة + دجاج — ثم صحن مكرونة متوسط',
+  'شوربة خضار + دجاج — ثم صينية بطاطا',
+  'سلطة + كوب فول أو حمص — ثم نصف رغيف',
+  'سلطة + دجاج مشوي — ثم صينية خضار بالفرن',
+  'شوربة عدس + دجاج مشوي + سلطة',
+  'علبة تونة بالماء + سلطة كبيرة + نصف رغيف أسمر',
+  'كفتة بالفرن مع خضار + سلطة',
+  'مكرونة بالخضار والتونة + سلطة',
+  'مسحّب دجاج + سلطة كبيرة',
+  'شكشوكة ببيضتين + خبز ساوردو + سلطة',
+  'برجر لحم بيتي + خبز أسمر + سلطة',
+  'صدر دجاج مشوي + أرز بني + خضار سوتيه',
+  'سمك سلمون بالفرن + بطاطا مشوية + سلطة'
+ ],
+ m3:[
+  'كوبا شوربة خضار + بيضة مسلوقة',
+  'سلطة كبيرة + شريحتا جبن + 5 حبات لوز',
+  '3 ملاعق لبنة + خيار وطماطم + نصف رغيف ساوردو',
+  'علبة تونة بالماء + سلطة خضراء',
+  'جاجيك: زبادي يوناني + خيار + جزر مبشور + ربع رغيف أسمر',
+  'بيضتان مسلوقتان + طماطم وخيار',
+  'كوب شوربة عدس + سلطة صغيرة',
+  'زبادي يوناني + خيار',
+  'شوربة دجاج صافية + خبز محمّص',
+  'بيضتان مسلوقتان + خيار',
+  'سلطة كبيرة + شريحة جبن قريش',
+  'لبنة + خضار مقطّعة + ربع رغيف',
+  'سلطة تونة صغيرة + خيار',
+  'كوب حليب قليل الدسم + حفنة لوز + تفاحة',
+  'شوربة شوفان بالخضار',
+  'أومليت صغير ببيضة + طماطم وخيار'
+ ]
+};
 
 const DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MON={6:'يوليو',7:'أغسطس'};
@@ -299,16 +334,25 @@ function maxView(){
 }
 function isCurrent(d){return key(d)===key(maxView())}
 
+/* الوجبة المختارة لسلوت معيّن في يوم معيّن */
+function mealIdx(d,slot){
+  const k=key(d)+'_'+slot, len=POOL[slot].length;
+  let i=state.mealPick[k]; if(i==null) i=di(d)%7;
+  return ((i%len)+len)%len;
+}
+function mealMain(d,slot){return POOL[slot][mealIdx(d,slot)]}
+function mealAlt(d,slot){const len=POOL[slot].length;return POOL[slot][(mealIdx(d,slot)+1)%len]}
+
 function buildTasks(d){
-  const w=planWeek(d), rest=(d.getDay()===5||d.getDay()===6), r=di(d)%7, t=[];
+  const w=planWeek(d), rest=(d.getDay()===5||d.getDay()===6), t=[];
   t.push({id:'wake',lab:'وقت الاستيقاظ',val:w.wake,pts:20,anchor:1,hint:'ثابت كل يوم — حتى في الاستراحة'});
-  t.push({id:'m1',lab:'الوجبة الأولى',val:w.m1,pts:15,detail:MEAL1[r][0],alt:MEAL1[r][1]});
+  t.push({id:'m1',lab:'الوجبة الأولى',val:w.m1,pts:15,gen:'m1'});
   t.push({id:'coffee1',lab:'القهوة',val:w.coffee,pts:0,skip:1});
   t.push({id:'iron',lab:'وقت الدواء',val:w.iron,pts:10,detail:'حبة الحديد + برتقالة أو عصير ليمون — بعد القهوة بساعتين'});
   if(rest){
     t.push({id:'m2',lab:'الوجبة الثانية',val:w.m2,pts:12,detail:'يوم استراحة — الأكل مفتوح تماماً. اختاري ما تشتهين.'});
   }else{
-    t.push({id:'m2',lab:'الوجبة الثانية',val:w.m2,pts:12,detail:MEAL2[r][0],alt:MEAL2[r][1]});
+    t.push({id:'m2',lab:'الوجبة الثانية',val:w.m2,pts:12,gen:'m2'});
     if(w.n>=4) t.push({id:'seq',lab:'ترتيب الصحن',val:w.m2,pts:8,detail:'خضار وسلطة وبروتين أولاً — ثم النشويات والحلويات بلا تحديد'});
   }
   t.push({id:'nap',lab:'القيلولة',val:w.nap,pts:3,opt:1,hint:'اختيارية — نقاط إضافية إن نمتِ'});
@@ -327,7 +371,7 @@ function buildTasks(d){
   if(rest){
     t.push({id:'m3',lab:'الوجبة الثالثة',val:w.m3,pts:12,detail:'مفتوحة — الشرط الوحيد أن تكون قبل النوم بساعتين'});
   }else{
-    t.push({id:'m3',lab:'الوجبة الثالثة',val:w.m3,pts:12,detail:MEAL3[r][0],alt:MEAL3[r][1]});
+    t.push({id:'m3',lab:'الوجبة الثالثة',val:w.m3,pts:12,gen:'m3'});
   }
   if(w.n>=2) t.push({id:'phone',lab:'الجوال خارج الغرفة',val:w.phone,pts:10});
   t.push({id:'sleep',lab:'وقت النوم',val:w.sleep,pts:20,anchor:1,hint:'ولو لم يأتِ النوم — استلقي بلا جوال'});
@@ -340,7 +384,7 @@ function dayEarned(d){const done=state.days[key(d)]||[];
 function weekFullMax(wi){let m=0;for(let i=0;i<7;i++){const d=new Date(START);d.setDate(START.getDate()+wi*7+i);if(inRange(d))m+=dayMax(d);}return m}
 function weekEarned(wi){let e=0;for(let i=0;i<7;i++){const d=new Date(START);d.setDate(START.getDate()+wi*7+i);if(inRange(d)&&di(d)<=di(maxView()))e+=dayEarned(d);}return e}
 
-let state={days:{},offset:0}, view=new Date();
+let state={days:{},offset:0,mealPick:{}}, view=new Date();
 const KEY='mano-tracker';
 
 const store={
@@ -358,12 +402,18 @@ const store={
 };
 async function load(){
   const raw=await store.get();
-  if(raw){try{const p=JSON.parse(raw);state.days=p.days||{};state.offset=p.offset||0}catch(e){}}
+  if(raw){try{const p=JSON.parse(raw);state.days=p.days||{};state.offset=p.offset||0;state.mealPick=p.mealPick||{}}catch(e){}}
 }
 async function save(){ if(!await store.set(JSON.stringify(state))) toast('تعذّر الحفظ'); }
 let tt;function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');
   clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),1300)}
 const pct=(a,b)=>b?Math.round(a/b*100):0;
+
+async function cycleMeal(d,slot){
+  const k=key(d)+'_'+slot;
+  state.mealPick[k]=mealIdx(d,slot)+1;
+  render(); await save(); toast('اقتراح وجبة جديد 🍽️');
+}
 
 function render(){
   const mv=maxView();
@@ -394,15 +444,22 @@ function render(){
         '<span class="val" style="color:var(--muted)">'+t.val+'</span>';
       box.appendChild(e);return;
     }
+    let dMain=t.detail, dAlt=t.alt;
+    if(t.gen){ dMain=mealMain(view,t.gen); dAlt=mealAlt(view,t.gen); }
     const b=document.createElement('button');
     b.className='task'+(done.includes(t.id)?' done':'')+(t.anchor?' anchor':'')+(t.opt?' opt':'');
     b.setAttribute('aria-pressed',done.includes(t.id));
     let h='<span class="line1"><span class="box">✓</span><span class="lab">'+t.lab+
       '</span><span class="dots"></span><span class="val">'+t.val+'</span><span class="pts">'+t.pts+'</span></span>';
-    if(t.detail) h+='<span class="detail">'+t.detail+
-      (t.alt?'<span class="alt"><b>ما عجبتك؟</b> '+t.alt+'</span>':'')+'</span>';
+    if(dMain) h+='<span class="detail">'+dMain+
+      (dAlt?'<span class="alt"><b>ما عجبتك؟</b> '+dAlt+'</span>':'')+
+      (t.gen?'<span class="genbtn" role="button" tabindex="0">🔄 اقترحي وجبة أخرى</span>':'')+'</span>';
     if(t.hint) h+='<span class="hint">'+t.hint+'</span>';
-    b.innerHTML=h; b.onclick=()=>toggle(t.id); box.appendChild(b);
+    b.innerHTML=h; b.onclick=()=>toggle(t.id);
+    if(t.gen){ const g=b.querySelector('.genbtn'); if(g){
+      const slot=t.gen; g.onclick=(e)=>{e.stopPropagation();cycleMeal(view,slot)};
+    }}
+    box.appendChild(b);
   });
 
   const de=dayEarned(view), dm=dayMax(view), dp=pct(de,dm);
