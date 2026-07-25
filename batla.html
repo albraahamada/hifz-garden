@@ -104,14 +104,16 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .task.done{background:linear-gradient(100deg,#e7fbf4,#eafff9);border-color:#a6ecd8}
 .task.anchor{border-right:4px solid var(--rose)}
 .task.done.anchor{border-right-color:var(--mint)}
-.task.opt{opacity:.9;border-style:dashed}
+.task.opt{border-style:dashed}
 
 .line1{display:flex;align-items:center;gap:9px}
 .box{flex:0 0 22px;height:22px;border-radius:8px;border:2px solid #cfc7e0;
   display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;transition:.18s}
 .task.done .box{background:var(--mint);border-color:var(--mint);color:#fff}
 .lab{font-family:'Changa',sans-serif;font-weight:700;font-size:15px;white-space:nowrap}
-.dots{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px);min-width:14px}
+.opttag{font-family:'Almarai',sans-serif;font-weight:800;font-size:9.5px;color:var(--grape);
+  background:#f0eafc;border-radius:99px;padding:2px 7px;white-space:nowrap}
+.dots{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px);min-width:12px}
 .val{font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--grape);white-space:nowrap;font-weight:600}
 .task.done .val{color:var(--mint)}
 .pts{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;
@@ -119,9 +121,6 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .task.done .pts{background:var(--mint)}
 .detail{display:block;margin-top:11px;padding:12px 13px;border-radius:12px;background:#f7f2fb;
   font-size:13px;line-height:1.75}
-.detail .alt{display:block;margin-top:9px;padding-top:9px;border-top:1px solid var(--line);
-  font-size:12.5px;line-height:1.7;color:var(--muted)}
-.detail .alt b{color:var(--rose)}
 .genbtn{display:inline-block;margin-top:11px;cursor:pointer;
   font-family:'Almarai',sans-serif;font-weight:800;font-size:12px;color:#fff;
   background:linear-gradient(120deg,var(--grape),var(--rose));border:none;border-radius:99px;padding:7px 15px;
@@ -258,7 +257,8 @@ const REWARDS=[
  {ic:'🎁',nm:'مكافأة حرة من اختيارك',need:80}
 ];
 
-/* مخزون الوجبات — أول 7 = خطة الأيام، والباقي بدائل بنفس الفلسفة (بروتين + ألياف + دهون صحية) */
+/* مخزون الوجبات — أول 7 = خطة الأيام، والباقي بدائل بنفس الفلسفة الغذائية.
+   أُضيفت خيارات من جدول الدكتور (بقوليات · مرق خضار · مكسرات · عصائر طازجة · سلطات · زيوت صحية). */
 const POOL={
  m1:[
   'زبادي يوناني 200 غ + ملعقة صغيرة عسل + ملعقة كبيرة بذور كتان مطحونة',
@@ -273,8 +273,12 @@ const POOL={
   'أومليت بيضتين بالطماطم + شريحة خبز أسمر',
   'لبنة 3 ملاعق + رشة زيت زيتون + خيار + ربع رغيف أسمر',
   'بيضتان مخفوقتان بالفطر والسبانخ + شريحة جبن',
-  'توست أسمر + بيضة مسلوقة + شرائح أفوكادو',
-  'زبادي يوناني + ملعقة زبدة لوز + تفاحة مقطّعة + قرفة',
+  '3 بيضات كاملة + فطر + فلفل ألوان + ملعقة زيت زيتون',
+  '90 غ حمص مسلوق + خيار + جرجير + ملعقة زيت زيتون',
+  '90 غ فول مسلوق + فلفل ألوان + جرجير + ملعقة زيت زيتون',
+  '90 غ عدس مسلوق + فلفل ألوان + خيار مخلل',
+  'بيض كامل + فلفل رومي + طماطم + ملعقة زيت زيتون',
+  'عصير أخضر طازج (خس + خيار + كزبرة + تفاح) + ملعقة صغيرة زيت جوز الهند',
   'سموذي: زبادي يوناني + نصف كوب توت + ملعقة بذور شيا',
   'عجة الشوفان: بيضتان + ملعقتا شوفان + جبن قريش'
  ],
@@ -286,15 +290,15 @@ const POOL={
   'شوربة خضار + دجاج — ثم صينية بطاطا',
   'سلطة + كوب فول أو حمص — ثم نصف رغيف',
   'سلطة + دجاج مشوي — ثم صينية خضار بالفرن',
-  'شوربة عدس + دجاج مشوي + سلطة',
-  'علبة تونة بالماء + سلطة كبيرة + نصف رغيف أسمر',
-  'كفتة بالفرن مع خضار + سلطة',
-  'مكرونة بالخضار والتونة + سلطة',
-  'مسحّب دجاج + سلطة كبيرة',
-  'شكشوكة ببيضتين + خبز ساوردو + سلطة',
+  'قطع دجاج مشوي أو بالفرن + سلطة (جرجير وبنجر وفلفل وطماطم وسبانخ) + ملعقة زيت زيتون',
+  'لحم بقر أو غنم بالفرن أو مشوي + سلطة تبولة + ملعقة زيت جوز الهند',
+  'سمك بالفرن + أرز مسلوق بدون زيت + سلطة خضراء',
+  '130 غ مرقة خضار مشكل + سلطة + ملعقة زيت زيتون',
+  'ملوخية + سلطة (جرجير وبنجر وفلفل وطماطم) + ملعقة زيت زيتون',
+  'بامية بالفرن بالبهارات الجافة + سلطة فتوش + ملعقة زيت زيتون',
+  'مرقة قرع + خضار سوتيه + ملعقة زيت جوز الهند',
   'برجر لحم بيتي + خبز أسمر + سلطة',
-  'صدر دجاج مشوي + أرز بني + خضار سوتيه',
-  'سمك سلمون بالفرن + بطاطا مشوية + سلطة'
+  'شكشوكة ببيضتين + خبز ساوردو + سلطة'
  ],
  m3:[
   'كوبا شوربة خضار + بيضة مسلوقة',
@@ -304,15 +308,35 @@ const POOL={
   'جاجيك: زبادي يوناني + خيار + جزر مبشور + ربع رغيف أسمر',
   'بيضتان مسلوقتان + طماطم وخيار',
   'كوب شوربة عدس + سلطة صغيرة',
+  'مرقة قرع + ملعقة صغيرة زيت سمسم',
+  '120 غ شوربة عدس + ملعقة صغيرة زيت جوز الهند',
+  'سلطة فتوش أو تبولة + ملعقة زيت زيتون',
+  'ملوخية + خس + ملعقة صغيرة زيت سمن',
+  'مرقة سبانخ + سلطة خضراء + ملعقة زيت زيتون',
   'زبادي يوناني + خيار',
-  'شوربة دجاج صافية + خبز محمّص',
-  'بيضتان مسلوقتان + خيار',
-  'سلطة كبيرة + شريحة جبن قريش',
-  'لبنة + خضار مقطّعة + ربع رغيف',
+  'بامية مطبوخة + سلطة تبولة + ملعقة زيت زيتون',
   'سلطة تونة صغيرة + خيار',
-  'كوب حليب قليل الدسم + حفنة لوز + تفاحة',
-  'شوربة شوفان بالخضار',
   'أومليت صغير ببيضة + طماطم وخيار'
+ ],
+ sn:[
+  '6 حبات لوز + 8 حبات عين جمل',
+  '9 حبات كاجو + 5 حبات لوز',
+  '6 حبات عين جمل + 7 حبات فستق',
+  '15 حبة مكسرات متنوعة + ملعقة صغيرة زيت سمسم',
+  '7 حبات لوز + 9 حبات عين جمل',
+  '10 حبات لوز + ملعقة صغيرة عسل',
+  'ملعقة زبدة فول سوداني + تفاحة صغيرة',
+  '13 حبة مكسرات متنوعة + تمرتان'
+ ],
+ sl:[
+  'كوب شوربة عدس + ملعقة صغيرة زيت جوز الهند',
+  'مرقة قرع + ملعقة صغيرة زيت زيتون',
+  'عصير طازج (جرجير + خس + أناناس) + ملعقة صغيرة زيت جوز الهند',
+  'عصير (بقدونس + خس + جزر + جوافة) + ملعقة صغيرة زيت جوز الهند',
+  'شوربة خضار مشكل + ملعقة زيت زيتون',
+  'مرقة سبانخ + خس',
+  'كوب زبادي يوناني + خيار',
+  'عصير (بنجر + جزر + رمان) + ملعقة صغيرة زيت جوز الهند'
  ]
 };
 
@@ -341,7 +365,6 @@ function mealIdx(d,slot){
   return ((i%len)+len)%len;
 }
 function mealMain(d,slot){return POOL[slot][mealIdx(d,slot)]}
-function mealAlt(d,slot){const len=POOL[slot].length;return POOL[slot][(mealIdx(d,slot)+1)%len]}
 
 function buildTasks(d){
   const w=planWeek(d), rest=(d.getDay()===5||d.getDay()===6), t=[];
@@ -354,6 +377,7 @@ function buildTasks(d){
   }else{
     t.push({id:'m2',lab:'الوجبة الثانية',val:w.m2,pts:12,gen:'m2'});
     if(w.n>=4) t.push({id:'seq',lab:'ترتيب الصحن',val:w.m2,pts:8,detail:'خضار وسلطة وبروتين أولاً — ثم النشويات والحلويات بلا تحديد'});
+    t.push({id:'snack1',lab:'سناك مكسرات',val:'سناك',pts:5,opt:1,gen:'sn',hint:'اختيارية — نقاط إضافية · من خيارات الدكتور 🥜'});
   }
   t.push({id:'nap',lab:'القيلولة',val:w.nap,pts:3,opt:1,hint:'اختيارية — نقاط إضافية إن نمتِ'});
   if(w.n>=3) t.push({id:'cut',lab:'آخر قهوة',val:'قبل '+w.cut,pts:8});
@@ -368,6 +392,7 @@ function buildTasks(d){
   t.push({id:'walk',lab:'المشي',val:w.walk,pts:12,
     detail:'<b>'+w.walkMin+'</b> بعد المغرب في الحي — أو داخل البيت ذهاباً وإياباً إن كانت الحرارة أو الرضيع عائقاً',
     hint:'سرعة تسمح لك بالكلام ولا تسمح بالغناء'});
+  if(!rest) t.push({id:'snack2',lab:'شوربة أو عصير خفيف',val:'خفيفة',pts:5,opt:1,gen:'sl',hint:'اختيارية — نقاط إضافية · شوربة أو عصير طازج 🍵'});
   if(rest){
     t.push({id:'m3',lab:'الوجبة الثالثة',val:w.m3,pts:12,detail:'مفتوحة — الشرط الوحيد أن تكون قبل النوم بساعتين'});
   }else{
@@ -444,15 +469,15 @@ function render(){
         '<span class="val" style="color:var(--muted)">'+t.val+'</span>';
       box.appendChild(e);return;
     }
-    let dMain=t.detail, dAlt=t.alt;
-    if(t.gen){ dMain=mealMain(view,t.gen); dAlt=mealAlt(view,t.gen); }
+    let dMain=t.detail;
+    if(t.gen){ dMain=mealMain(view,t.gen); }
     const b=document.createElement('button');
     b.className='task'+(done.includes(t.id)?' done':'')+(t.anchor?' anchor':'')+(t.opt?' opt':'');
     b.setAttribute('aria-pressed',done.includes(t.id));
-    let h='<span class="line1"><span class="box">✓</span><span class="lab">'+t.lab+
-      '</span><span class="dots"></span><span class="val">'+t.val+'</span><span class="pts">'+t.pts+'</span></span>';
+    let h='<span class="line1"><span class="box">✓</span><span class="lab">'+t.lab+'</span>'+
+      (t.opt?'<span class="opttag">اختياري</span>':'')+
+      '<span class="dots"></span><span class="val">'+t.val+'</span><span class="pts">'+t.pts+'</span></span>';
     if(dMain) h+='<span class="detail">'+dMain+
-      (dAlt?'<span class="alt"><b>ما عجبتك؟</b> '+dAlt+'</span>':'')+
       (t.gen?'<span class="genbtn" role="button" tabindex="0">🔄 اقترحي وجبة أخرى</span>':'')+'</span>';
     if(t.hint) h+='<span class="hint">'+t.hint+'</span>';
     b.innerHTML=h; b.onclick=()=>toggle(t.id);
