@@ -17,61 +17,83 @@
   --ink:#3d2b57; --muted:#9088ab; --line:#f0e7f4;
   --rose:#ff5d97; --grape:#8b5cf6; --mint:#12c2a0; --gold:#ffab1f; --sky:#37c1e8; --coral:#ff7a59;
   --red:#f04e6c;
+  --gap:16px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{color:var(--ink);
   background:linear-gradient(165deg,#fff0f7 0%,#f2f0ff 48%,#fff6ec 100%);
   background-attachment:fixed;
-  font-family:'Almarai',system-ui,sans-serif;font-size:15px;line-height:1.65;padding:0 0 44px}
+  font-family:'Almarai',system-ui,sans-serif;font-size:15px;line-height:1.65;padding:0 0 40px}
 .wrap{max-width:560px;margin:0 auto;padding:0 16px}
 
-header{padding:22px 0 4px}
+/* ===== الترويسة + التنقل ===== */
+header{padding:22px 0 0}
 .eyebrow{font-family:'Changa',sans-serif;font-size:13px;letter-spacing:.04em;
   color:var(--rose);margin:0 0 6px;font-weight:700}
 h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.2;margin:0;
   background:linear-gradient(92deg,var(--grape),var(--rose) 55%,var(--gold));
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.subhead{color:var(--muted);font-size:13px;margin-top:3px;font-weight:700}
+.daterow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px}
+.subhead{color:var(--muted);font-size:13px;font-weight:700}
+.todaybtn{flex:0 0 auto;background:linear-gradient(120deg,var(--grape),var(--rose));color:#fff;border:none;
+  border-radius:12px;padding:9px 20px;font-family:'Almarai',sans-serif;font-weight:800;font-size:13px;cursor:pointer;
+  box-shadow:0 4px 12px rgba(255,93,151,.28);white-space:nowrap}
+.todaybtn:active{transform:scale(.97)}
+.navrow{display:flex;gap:10px;margin-top:12px}
+.navrow button{flex:1;background:var(--card);color:var(--ink);border:1px solid var(--line);
+  border-radius:12px;padding:11px;font-family:'Almarai',sans-serif;font-weight:800;font-size:13px;cursor:pointer;
+  box-shadow:0 3px 10px rgba(140,110,180,.08)}
+.navrow button:active{transform:scale(.98)}
+.navrow button:focus-visible,.todaybtn:focus-visible{outline:2px solid var(--grape);outline-offset:2px}
+.navrow button:disabled{opacity:.4;cursor:not-allowed}
 
-/* ===== شريط الإنجاز المحفّز ===== */
-.hero{margin:16px 0 4px;border-radius:22px;padding:16px 15px 15px;color:#fff;
+/* ===== رسم التقدّم الأسبوعي ===== */
+.hero{margin:var(--gap) 0 0;border-radius:22px;padding:17px 16px 15px;color:#fff;
   background:linear-gradient(130deg,#8b5cf6 0%,#ff5d97 55%,#ffab1f 115%);
   box-shadow:0 12px 30px rgba(255,93,151,.28)}
-.herotop{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.hstat{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);
-  border-radius:15px;padding:9px 4px;text-align:center;backdrop-filter:blur(2px)}
-.hnum{font-family:'Changa',sans-serif;font-weight:800;font-size:22px;line-height:1;display:block}
-.hlbl{font-size:10.5px;opacity:.95;margin-top:4px;display:block;font-weight:700}
-.hbar{height:11px;background:rgba(255,255,255,.28);border-radius:99px;overflow:hidden;margin:13px 0 8px}
-.hfill{height:100%;border-radius:99px;background:#fff;transition:width .6s;box-shadow:0 0 10px rgba(255,255,255,.6)}
-.hmsg{font-family:'Changa',sans-serif;font-weight:700;font-size:14px;text-align:center}
+.herohead{font-family:'Changa',sans-serif;font-weight:800;font-size:15px;margin:0 0 14px;text-align:center;letter-spacing:.02em}
+.weekrings{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:15px}
+.wring{display:flex;flex-direction:column;align-items:center;gap:6px}
+.wdisc{width:100%;max-width:50px;aspect-ratio:1;border-radius:50%;position:relative;
+  background:conic-gradient(var(--c,#fff) calc(var(--p,0)*1%), rgba(255,255,255,.28) 0)}
+.wdisc::after{content:'';position:absolute;inset:5px;border-radius:50%;background:#fff}
+.wdisc b{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-size:14px;font-weight:800;color:var(--ink)}
+.wlbl{font-size:10.5px;font-weight:700;opacity:.96;font-family:'IBM Plex Mono',monospace}
+.periodbar{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;height:13px;margin-bottom:9px}
+.pseg{border-radius:6px;background:rgba(255,255,255,.26);transition:background .4s}
+.pseg.part{background:rgba(255,255,255,.62)}
+.pseg.done{background:#fff;box-shadow:0 0 8px rgba(255,255,255,.55)}
+.periodcap{text-align:center;font-family:'Changa',sans-serif;font-weight:700;font-size:13px}
 
-.tip{margin:14px 0 4px;padding:13px 15px;border-radius:16px;
+/* ===== نصيحة الأسبوع ===== */
+.tip{margin:var(--gap) 0 0;padding:14px 15px;border-radius:16px;
   background:linear-gradient(100deg,#efe9ff,#ffe9f2);border:1px solid var(--line)}
-.tip b{display:block;font-family:'Changa',sans-serif;font-size:13px;color:var(--grape);margin-bottom:2px}
+.tip b{display:block;font-family:'Changa',sans-serif;font-size:13px;color:var(--grape);margin-bottom:3px}
 .tip span{font-size:13.5px;line-height:1.6}
 
-.scorerow{display:flex;align-items:center;gap:16px;margin:18px 0 4px;
-  background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px;
+/* ===== مؤشر اليوم ===== */
+.scorerow{display:flex;align-items:center;gap:16px;margin:var(--gap) 0 0;
+  background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px 16px;
   box-shadow:0 6px 18px rgba(140,110,180,.1)}
 .ring{position:relative;flex:0 0 84px;height:84px}
 .ring svg{transform:rotate(-90deg)}
 .ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ring .num{font-family:'Changa',sans-serif;font-weight:800;font-size:22px;line-height:1;color:var(--rose)}
 .ring .lbl{font-size:10px;color:var(--muted);margin-top:2px}
-.scoretext h2{font-family:'Changa',sans-serif;font-size:17px;margin:0 0 2px;font-weight:700}
+.scoretext h2{font-family:'Changa',sans-serif;font-size:17px;margin:0 0 3px;font-weight:700}
 .scoretext p{margin:0;font-size:12.5px;color:var(--muted)}
 
 .sec{font-family:'Changa',sans-serif;font-size:15px;color:var(--ink);
-  margin:24px 0 10px;padding-bottom:7px;border-bottom:2px solid var(--line);font-weight:700}
+  margin:26px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);font-weight:700}
 
-.fajr{display:flex;align-items:baseline;gap:8px;padding:10px 14px;margin-bottom:9px;
+/* ===== العناصر ===== */
+.fajr{display:flex;align-items:baseline;gap:8px;padding:11px 14px;margin-bottom:9px;
   border-radius:14px;background:#fff5e6;border:1px dashed #ffd591}
 .fajr .lab{font-weight:700;font-size:14px;color:#e29200}
 .fajr .dots{flex:1;border-bottom:2px dotted #ffd591;transform:translateY(-4px)}
 .fajr .val{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#e29200}
-.fajr .note{width:100%;font-size:11.5px;color:var(--muted);margin-top:3px}
+.fajr .note{width:100%;font-size:11.5px;color:var(--muted);margin-top:4px}
 
 .task{display:block;width:100%;background:var(--card);border:1px solid var(--line);
   border-radius:16px;padding:13px 14px;margin-bottom:9px;cursor:pointer;text-align:right;
@@ -84,10 +106,9 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .task.done.anchor{border-right-color:var(--mint)}
 .task.opt{opacity:.9;border-style:dashed}
 
-.line1{display:flex;align-items:baseline;gap:9px}
+.line1{display:flex;align-items:center;gap:9px}
 .box{flex:0 0 22px;height:22px;border-radius:8px;border:2px solid #cfc7e0;
-  display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;
-  transition:.18s;align-self:center}
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;transition:.18s}
 .task.done .box{background:var(--mint);border-color:var(--mint);color:#fff}
 .lab{font-family:'Changa',sans-serif;font-weight:700;font-size:15px;white-space:nowrap}
 .dots{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px);min-width:14px}
@@ -96,21 +117,21 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .pts{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;
   background:linear-gradient(120deg,var(--grape),var(--rose));padding:2px 8px;border-radius:99px}
 .task.done .pts{background:var(--mint)}
-.detail{margin:9px 0 0 0;padding:10px 12px;border-radius:12px;background:#f7f2fb;
-  font-size:13px;line-height:1.7}
-.detail .alt{display:block;margin-top:7px;padding-top:7px;border-top:1px solid var(--line);
+.detail{margin-top:10px;padding:11px 12px;border-radius:12px;background:#f7f2fb;font-size:13px;line-height:1.7}
+.detail .alt{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
   font-size:12.5px;color:var(--muted)}
 .detail .alt b{color:var(--rose)}
-.hint{font-size:11.5px;color:var(--muted);margin:5px 0 0 31px}
+.hint{font-size:11.5px;color:var(--muted);margin:6px 0 0 31px}
 
+/* ===== لوحة الأسبوع ===== */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px 16px;
   box-shadow:0 6px 18px rgba(140,110,180,.1)}
-.statusrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.statusrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
 .statusrow h3{font-family:'Changa',sans-serif;font-size:26px;margin:0;font-weight:800;color:var(--grape)}
 .dot{width:15px;height:15px;border-radius:99px}
 .bar{height:15px;background:#f0ebf5;border-radius:99px;overflow:hidden}
 .fill{height:100%;border-radius:99px;transition:width .5s,background .4s}
-.barnums{display:flex;justify-content:space-between;margin-top:7px;
+.barnums{display:flex;justify-content:space-between;margin-top:8px;
   font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted)}
 
 .reward{margin-top:16px;padding:16px;border-radius:18px;border:1px solid var(--line);
@@ -119,30 +140,20 @@ h1{font-family:'Changa',sans-serif;font-weight:800;font-size:30px;line-height:1.
 .reward.hit .ic{filter:none;opacity:1}
 .reward.hit{background:linear-gradient(140deg,#fff2d6,#ffe6f0);border-color:var(--gold)}
 .reward.lost{opacity:.55}
-.reward .cap{font-size:11.5px;color:var(--muted);margin:6px 0 2px}
+.reward .cap{font-size:11.5px;color:var(--muted);margin:7px 0 2px}
 .reward .nm{font-family:'Changa',sans-serif;font-size:19px;font-weight:800;margin:0;color:var(--ink)}
-.reward .st{margin-top:9px;font-size:13px;font-weight:700}
+.reward .st{margin-top:10px;font-size:13px;font-weight:700}
 .reward.hit .st{color:#d98a00}
 .reward.lost .st{color:var(--red)}
 
-.nav{display:flex;gap:9px;margin:20px 0 0}
-.nav button{flex:1;background:var(--card);color:var(--ink);border:1px solid var(--line);
-  border-radius:14px;padding:12px;font-family:'Almarai',sans-serif;font-weight:800;font-size:13px;cursor:pointer;
-  box-shadow:0 4px 12px rgba(140,110,180,.08)}
-.nav button#today{background:linear-gradient(120deg,var(--grape),var(--rose));color:#fff;border:none}
-.nav button:active{transform:scale(.98)}
-.nav button:focus-visible{outline:2px solid var(--grape);outline-offset:2px}
-.nav button:disabled{opacity:.4;cursor:not-allowed}
-
 .review{margin-top:14px;padding:15px;border-radius:16px;
   background:linear-gradient(140deg,#ffe6f0,#efe9ff);border:1px solid var(--rose)}
-.review h4{font-family:'Changa',sans-serif;margin:0 0 5px;font-size:16px;color:var(--rose)}
-.review p{margin:0 0 11px;font-size:13px}
+.review h4{font-family:'Changa',sans-serif;margin:0 0 6px;font-size:16px;color:var(--rose)}
+.review p{margin:0 0 12px;font-size:13px}
 .review button{width:100%;padding:11px;border-radius:12px;border:1px solid var(--rose);
-  cursor:pointer;font-family:'Almarai',sans-serif;font-weight:800;font-size:13px;
-  background:#fff;color:var(--rose)}
+  cursor:pointer;font-family:'Almarai',sans-serif;font-weight:800;font-size:13px;background:#fff;color:var(--rose)}
 
-footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;line-height:1.9}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:26px;line-height:1.9}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(90px);
   background:linear-gradient(120deg,var(--grape),var(--rose));color:#fff;padding:11px 20px;border-radius:99px;font-weight:800;
   font-size:13px;transition:transform .3s;z-index:50;box-shadow:0 8px 24px rgba(255,93,151,.4)}
@@ -155,18 +166,21 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;line-
   <header>
     <p class="eyebrow">جدول منو البطلة 🌸</p>
     <h1 id="dayname">—</h1>
-    <div class="subhead" id="datesub">—</div>
+    <div class="daterow">
+      <div class="subhead" id="datesub">—</div>
+      <button id="today" class="todaybtn">اليوم</button>
+    </div>
+    <div class="navrow">
+      <button id="prev">السابق</button>
+      <button id="next">التالي</button>
+    </div>
   </header>
 
   <div class="hero">
-    <div class="herotop">
-      <div class="hstat"><span class="hnum" id="hPts">0</span><span class="hlbl">نقطة ⭐</span></div>
-      <div class="hstat"><span class="hnum" id="hDays">0</span><span class="hlbl">أيام مكتملة ✅</span></div>
-      <div class="hstat"><span class="hnum" id="hWeeks">0</span><span class="hlbl">أسابيع 🏆</span></div>
-      <div class="hstat"><span class="hnum" id="hStreak">0</span><span class="hlbl">متتالية 🔥</span></div>
-    </div>
-    <div class="hbar"><div class="hfill" id="hFill" style="width:0%"></div></div>
-    <div class="hmsg" id="hMsg">بدايتك يا بطلة 🌟</div>
+    <p class="herohead">التقدّم الأسبوعي 🌟</p>
+    <div class="weekrings" id="weekRings"></div>
+    <div class="periodbar" id="periodBar"></div>
+    <div class="periodcap" id="periodCap">٠ من ٦ أسابيع</div>
   </div>
 
   <div class="tip"><b id="tiplab">نصيحة الأسبوع</b><span id="tiptext">—</span></div>
@@ -200,12 +214,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;line-
     <div class="reward" id="reward"></div>
     <div id="reviewSlot"></div>
   </section>
-
-  <div class="nav">
-    <button id="prev">السابق</button>
-    <button id="today">اليوم</button>
-    <button id="next">التالي</button>
-  </div>
 
   <footer>26 يوليو – 31 أغسطس 2026<br>وقت الاستيقاظ هو المرساة — والنوم يتقدّم خلفه.</footer>
 </div>
@@ -244,14 +252,15 @@ const REWARDS=[
  {ic:'🎁',nm:'مكافأة حرة من اختيارك',need:80}
 ];
 
+/* الوجبة الأولى — [الأساسي, البديل إن لم تعجبك] */
 const MEAL1=[
- 'زبادي يوناني 200 غ + ملعقة صغيرة عسل + ملعقة كبيرة بذور كتان مطحونة',
- 'بيضتان مسلوقتان + ربع حبة أفوكادو + خيارة',
- 'سكير 170 غ + نصف كوب توت أزرق + ملعقة بذور شيا',
- 'أومليت بيضتين بالسبانخ + شريحة خبز ساوردو',
- 'زبادي يوناني 200 غ + ملعقة زبدة فول سوداني + رشة قرفة',
- 'بيضتان بملعقة زيت زيتون + شريحتا جبن قريش + طماطم',
- 'سكير 170 غ + 10 حبات لوز + ملعقة صغيرة عسل'
+ ['زبادي يوناني 200 غ + ملعقة صغيرة عسل + ملعقة كبيرة بذور كتان مطحونة','جبن قريش 4 ملاعق + طماطم + 7 حبات لوز'],
+ ['بيضتان مسلوقتان + ربع حبة أفوكادو + خيارة','زبادي يوناني 200 غ + ملعقة بذور شيا + نصف موزة'],
+ ['سكير 170 غ + نصف كوب توت أزرق + ملعقة بذور شيا','أومليت بيضتين بالسبانخ + شريحة جبن'],
+ ['أومليت بيضتين بالسبانخ + شريحة خبز ساوردو','سكير 170 غ + ملعقة زبدة فول سوداني + تفاحة صغيرة'],
+ ['زبادي يوناني 200 غ + ملعقة زبدة فول سوداني + رشة قرفة','بيضتان مسلوقتان + ربع حبة أفوكادو + خيارة'],
+ ['بيضتان بملعقة زيت زيتون + شريحتا جبن قريش + طماطم','زبادي يوناني 200 غ + ملعقة صغيرة عسل + 10 حبات لوز'],
+ ['سكير 170 غ + 10 حبات لوز + ملعقة صغيرة عسل','أومليت بيضتين بالطماطم + شريحة خبز أسمر']
 ];
 const MEAL2=[
  ['صحن سلطة كبير + صدر دجاج مشوي بحجم كفك — ثم كوب رز بسمتي','شوربة عدس + دجاج مشوي + سلطة'],
@@ -281,7 +290,7 @@ function inRange(d){const i=di(d);return i>=0&&i<=di(END)}
 function calWk(d){return Math.floor(di(d)/7)}
 function planWeek(d){return WEEKS[Math.max(0,Math.min(5,calWk(d)-state.offset))]}
 
-/* أقصى يوم يُسمح بعرضه = تاريخ اليوم الحقيقي (ضمن مدة البرنامج). لا أيام مستقبلية. */
+/* أقصى يوم يُسمح بعرضه = تاريخ اليوم الحقيقي (ضمن المدة). لا أيام مستقبلية. */
 function maxView(){
   let t=new Date(); t=new Date(t.getFullYear(),t.getMonth(),t.getDate());
   if(di(t)<0) return new Date(START);
@@ -293,7 +302,7 @@ function isCurrent(d){return key(d)===key(maxView())}
 function buildTasks(d){
   const w=planWeek(d), rest=(d.getDay()===5||d.getDay()===6), r=di(d)%7, t=[];
   t.push({id:'wake',lab:'وقت الاستيقاظ',val:w.wake,pts:20,anchor:1,hint:'ثابت كل يوم — حتى في الاستراحة'});
-  t.push({id:'m1',lab:'الوجبة الأولى',val:w.m1,pts:15,detail:MEAL1[r]});
+  t.push({id:'m1',lab:'الوجبة الأولى',val:w.m1,pts:15,detail:MEAL1[r][0],alt:MEAL1[r][1]});
   t.push({id:'coffee1',lab:'القهوة',val:w.coffee,pts:0,skip:1});
   t.push({id:'iron',lab:'وقت الدواء',val:w.iron,pts:10,detail:'حبة الحديد + برتقالة أو عصير ليمون — بعد القهوة بساعتين'});
   if(rest){
@@ -356,27 +365,6 @@ let tt;function toast(m){const e=document.getElementById('toast');e.textContent=
   clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),1300)}
 const pct=(a,b)=>b?Math.round(a/b*100):0;
 
-/* إجمالي الإنجاز حتى اليوم الحالي */
-function overall(){
-  const mv=maxView(); let totalPts=0,doneDays=0,streak=0,run=0,possible=0;
-  for(let i=0;i<=di(END);i++){
-    const d=new Date(START); d.setDate(START.getDate()+i);
-    if(di(d)>di(mv)) break;
-    const e=dayEarned(d), m=dayMax(d), p=pct(e,m);
-    totalPts+=e; possible+=m;
-    if(p>=70){ doneDays++; run++; if(run>streak)streak=run; } else run=0;
-  }
-  let weeksHit=0;
-  for(let wi=0;wi<6;wi++){
-    const wkStart=new Date(START); wkStart.setDate(START.getDate()+wi*7);
-    if(di(wkStart)>di(mv)) continue;
-    const rw=REWARDS[Math.max(0,Math.min(5,wi-state.offset))];
-    const need=Math.ceil(weekFullMax(wi)*rw.need/100);
-    if(weekEarned(wi)>=need && need>0) weeksHit++;
-  }
-  return {totalPts,doneDays,streak,weeksHit,pace:pct(totalPts,possible)};
-}
-
 function render(){
   const mv=maxView();
   if(!inRange(view)) view=new Date(mv);
@@ -386,8 +374,8 @@ function render(){
   document.getElementById('dayname').textContent=DAYS[view.getDay()];
   document.getElementById('datesub').textContent=view.getDate()+' '+MON[view.getMonth()]+' 2026'+
     ((view.getDay()===5||view.getDay()===6)?' · يوم استراحة':'')+
-    (isCurrent(view)?' · يومك':' · مراجعة يوم سابق');
-  const nb=document.getElementById('next'); nb.disabled=isCurrent(view);
+    (isCurrent(view)?'':' · مراجعة يوم سابق');
+  document.getElementById('next').disabled=isCurrent(view);
   document.getElementById('prev').disabled=(di(view)<=0);
   document.getElementById('tiptext').textContent=w.tip;
 
@@ -422,23 +410,33 @@ function render(){
   document.getElementById('arc').style.strokeDashoffset=232-(232*dp/100);
   document.getElementById('todayhead').textContent=de+' من '+dm+' نقطة';
   document.getElementById('todaysub').textContent=dp===100?'يوم كامل 🎉':dp>=70?'ماشية كويس 💪':dp>=40?'باقي عناصر':'ابدئي بالاستيقاظ والنوم';
-  drawWeek(); drawHero();
+  drawWeek(); drawWeeklyProgress();
 }
 
-function drawHero(){
-  const o=overall();
-  document.getElementById('hPts').textContent=o.totalPts;
-  document.getElementById('hDays').textContent=o.doneDays;
-  document.getElementById('hWeeks').textContent=o.weeksHit;
-  document.getElementById('hStreak').textContent=o.streak;
-  document.getElementById('hFill').style.width=Math.min(100,o.pace)+'%';
-  let m;
-  if(o.totalPts===0) m='ابدئي أول مهمة اليوم 🌟';
-  else if(o.streak>=5) m='سلسلة '+o.streak+' أيام 🔥 ما شاء الله!';
-  else if(o.pace>=75) m='إيقاعك ممتاز يا بطلة 💜';
-  else if(o.pace>=50) m='ماشية بثبات — كمّلي 💪';
-  else m='كل نقطة تقرّبك — استمري 🌸';
-  document.getElementById('hMsg').textContent=m;
+/* رسم التقدّم الأسبوعي: دائرة لكل أسبوع + خانة الفترة الكاملة */
+function drawWeeklyProgress(){
+  const rings=document.getElementById('weekRings'); rings.innerHTML='';
+  const segs=document.getElementById('periodBar'); segs.innerHTML='';
+  let passedCount=0;
+  for(let wi=0;wi<6;wi++){
+    const full=weekFullMax(wi), earned=weekEarned(wi);
+    const rw=REWARDS[Math.max(0,Math.min(5,wi-state.offset))];
+    const need=Math.ceil(full*rw.need/100);
+    const started=di(new Date(START.getFullYear(),START.getMonth(),START.getDate()+wi*7))<=di(maxView());
+    const ringP=need?Math.min(100,Math.round(earned/need*100)):0;
+    const passed=started&&need>0&&earned>=need;
+    const active=started&&earned>0&&!passed;
+    const c=passed?'#12c2a0':active?'#ffdf6b':'rgba(255,255,255,.85)';
+    if(passed)passedCount++;
+    const r=document.createElement('div');r.className='wring';
+    r.innerHTML='<div class="wdisc" style="--p:'+(started?ringP:0)+';--c:'+c+'"><b>'+(wi+1)+'</b></div>'+
+      '<span class="wlbl">'+(started?ringP+'%':'—')+'</span>';
+    rings.appendChild(r);
+    const s=document.createElement('div');
+    s.className='pseg'+(passed?' done':active?' part':'');
+    segs.appendChild(s);
+  }
+  document.getElementById('periodCap').textContent=passedCount+' من 6 أسابيع';
 }
 
 function drawWeek(){
